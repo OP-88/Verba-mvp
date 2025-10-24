@@ -1,6 +1,10 @@
+/**
+ * Recorder component - handles audio recording and transcription
+ */
 import { useState, useRef } from 'react'
+import { transcribeAudio } from '../api'
 
-function Recorder({ onTranscriptComplete, onTranscribing, apiUrl }) {
+function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const mediaRecorderRef = useRef(null)
@@ -21,7 +25,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, apiUrl }) {
 
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        await transcribeAudio(audioBlob)
+        await handleTranscribe(audioBlob)
         
         // Stop all tracks
         stream.getTracks().forEach(track => track.stop())
@@ -42,24 +46,20 @@ function Recorder({ onTranscriptComplete, onTranscribing, apiUrl }) {
     }
   }
 
-  const transcribeAudio = async (audioBlob) => {
+  const handleTranscribe = async (audioBlob) => {
     setIsProcessing(true)
     onTranscribing(true)
 
     try {
-      const formData = new FormData()
-      formData.append('audio', audioBlob, 'recording.webm')
-
-      const response = await fetch(`${apiUrl}/transcribe`, {
-        method: 'POST',
-        body: formData,
-      })
-
-      const data = await response.json()
+      const data = await transcribeAudio(audioBlob)
+      
+      if (data.warning) {
+        onError(data.warning, 'info')
+      }
+      
       onTranscriptComplete(data.transcript)
     } catch (error) {
-      console.error('Transcription failed:', error)
-      alert('Failed to transcribe audio. Please try again.')
+      onError(error.message || 'Failed to transcribe audio. Please try again.')
       onTranscribing(false)
     } finally {
       setIsProcessing(false)

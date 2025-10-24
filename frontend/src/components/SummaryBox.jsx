@@ -1,4 +1,7 @@
-function SummaryBox({ summary }) {
+/**
+ * SummaryBox component - displays structured meeting summary with export option
+ */
+function SummaryBox({ summary, onExport, canExport = true }) {
   return (
     <div className="relative group">
       {/* Glassmorphism Card */}
@@ -88,14 +91,18 @@ function SummaryBox({ summary }) {
 
         {/* Export Button */}
         <div className="mt-8 flex justify-center">
-          <button className="group/export px-8 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white rounded-2xl font-bold text-lg
-                           hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105
-                           flex items-center gap-3">
+          <button 
+            onClick={onExport}
+            disabled={!canExport}
+            className="group/export px-8 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white rounded-2xl font-bold text-lg
+                     hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                     flex items-center gap-3"
+          >
             <svg className="w-6 h-6 group-hover/export:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            Export Summary
-            <span className="text-xs bg-white/20 px-2 py-1 rounded-full">Coming Soon</span>
+            Export as Markdown
           </button>
         </div>
       </div>
