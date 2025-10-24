@@ -168,6 +168,90 @@ npm run dev
 
 Changes to frontend code will hot-reload automatically.
 
+## Deployment on Vercel
+
+**Important**: Verba's architecture requires **two separate deployments**:
+
+1. **Frontend**: Can be deployed on Vercel
+2. **Backend**: Must be deployed separately (Railway, Render, DigitalOcean, or your own server)
+
+### Why?
+
+Vercel's serverless functions have:
+- 10-second execution timeout (Hobby plan) / 60 seconds (Pro)
+- Limited memory and CPU
+- No support for large ML models like Whisper
+
+The backend requires persistent processes and significant compute power for audio transcription.
+
+### Frontend Deployment (Vercel)
+
+1. **Push your code to GitHub** (already done!)
+
+2. **Import to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Import your `Verba-mvp` repository
+   - Set **Root Directory** to `frontend`
+
+3. **Configure Environment Variable**:
+   - Add `VITE_API_URL` = `https://your-backend-url.com`
+   - Replace with your actual backend URL
+
+4. **Deploy**
+
+Your frontend will be live at `https://your-app.vercel.app`
+
+### Backend Deployment Options
+
+#### Option 1: Railway (Recommended)
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and deploy
+railway login
+railway init
+railway up
+```
+
+#### Option 2: Render
+1. Create new Web Service
+2. Connect your GitHub repo
+3. Set **Root Directory**: `backend`
+4. **Build Command**: `pip install -r requirements.txt`
+5. **Start Command**: `python app.py`
+
+#### Option 3: DigitalOcean App Platform
+- Similar to Render
+- Good pricing for CPU-intensive workloads
+
+#### Option 4: Self-hosted VPS
+- Use any Linux server with Docker or systemd
+- Best for full control and privacy
+
+### Update CORS
+
+Once backend is deployed, update `backend/app.py`:
+
+```python
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://your-app.vercel.app"  # Add your Vercel domain
+    ],
+    # ...
+)
+```
+
+### Local Development with Production Backend
+
+Create `frontend/.env.local`:
+```
+VITE_API_URL=https://your-backend-url.com
+```
+
 ## How It Works
 
 1. **Recording**: Browser captures audio via MediaRecorder API
