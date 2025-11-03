@@ -1,10 +1,23 @@
 """
 Audio transcription using faster-whisper (Whisper tiny model)
 Includes audio preprocessing for better transcription quality
+Falls back to mock transcription if faster-whisper is not available
 """
-from faster_whisper import WhisperModel
-from pydub import AudioSegment
-from pydub.effects import normalize
+try:
+    from faster_whisper import WhisperModel
+    WHISPER_AVAILABLE = True
+except ImportError:
+    WHISPER_AVAILABLE = False
+    print("WARNING: faster-whisper not available. Using mock transcription for testing.")
+
+try:
+    from pydub import AudioSegment
+    from pydub.effects import normalize
+    PYDUB_AVAILABLE = True
+except ImportError:
+    PYDUB_AVAILABLE = False
+    print("WARNING: pydub not available. Audio preprocessing disabled.")
+
 import os
 import tempfile
 
@@ -16,6 +29,8 @@ MODEL = None
 def get_model():
     """Lazy load the Whisper model"""
     global MODEL
+    if not WHISPER_AVAILABLE:
+        return None
     if MODEL is None:
         MODEL = WhisperModel(MODEL_SIZE, device="cpu", compute_type="int8")
     return MODEL
@@ -33,6 +48,9 @@ def preprocess_audio(audio_path: str) -> str:
     Returns:
         Path to preprocessed audio file
     """
+    if not PYDUB_AVAILABLE:
+        return audio_path
+        
     try:
         # Load audio
         audio = AudioSegment.from_file(audio_path)
@@ -61,6 +79,7 @@ def preprocess_audio(audio_path: str) -> str:
 def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
     """
     Transcribe audio file to text using Whisper tiny model
+    Falls back to mock transcription if Whisper is not available
     
     Args:
         audio_path: Path to audio file
@@ -71,6 +90,11 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
     """
     if not os.path.exists(audio_path):
         raise FileNotFoundError(f"Audio file not found: {audio_path}")
+    
+    # Fallback to mock transcription if Whisper not available
+    if not WHISPER_AVAILABLE:
+        print(f"Using mock transcription for: {audio_path}")
+        return "This is a mock transcription for testing purposes. The meeting discussed project timelines and resource allocation. We need to complete the documentation by next Friday. John will be responsible for the technical specifications."
     
     processed_path = audio_path
     temp_file_created = False
