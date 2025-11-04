@@ -1,49 +1,22 @@
 INFO:__main__:Starting Verba API server...
 INFO:__main__:Online features: disabled
 INFO:__main__:Whisper model: tiny on cpu
-INFO:     Started server process [667865]
+INFO:     Started server process [26522]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-WARNING: faster-whisper not available. Using mock transcription for testing.
-WARNING: pydub not available. Audio preprocessing disabled.
-INFO:     127.0.0.1:53920 - "GET /api/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55254 - "GET /api/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55270 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55254 - "GET /api/status HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55270 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:__main__:Transcribing audio file: recording.webm (2026 bytes)
-INFO:__main__:Transcription successful: 228 characters
-Using mock transcription for: /tmp/tmpx8u9u5vf.webm
-INFO:     127.0.0.1:37646 - "POST /api/transcribe HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37646 - "OPTIONS /api/summarize HTTP/1.1" 200 OK
-INFO:__main__:Summarizing transcript: 228 characters
-INFO:__main__:Session saved: 87871f5f-6567-4139-9aab-147bbe6eec52
-INFO:     127.0.0.1:37646 - "POST /api/summarize HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37646 - "GET /api/sessions/87871f5f-6567-4139-9aab-147bbe6eec52/export HTTP/1.1" 200 OK
-INFO:__main__:Transcribing audio file: recording.webm (5175 bytes)
-INFO:__main__:Transcription successful: 228 characters
-Using mock transcription for: /tmp/tmpanbqsuia.webm
-INFO:     127.0.0.1:36196 - "POST /api/transcribe HTTP/1.1" 200 OK
-INFO:__main__:Summarizing transcript: 228 characters
-INFO:__main__:Session saved: d1126fdf-3511-4789-92f1-b777bed144d4
-INFO:     127.0.0.1:36196 - "POST /api/summarize HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:__main__:Transcribing audio file: recording.webm (331 bytes)
-INFO:__main__:Transcription successful: 228 characters
-Using mock transcription for: /tmp/tmpr87x7dac.webm
-INFO:     127.0.0.1:45252 - "POST /api/transcribe HTTP/1.1" 200 OK
-INFO:__main__:Transcribing audio file: recording.webm (255 bytes)
-INFO:__main__:Transcription successful: 228 characters
-Using mock transcription for: /tmp/tmpmtn3w1j0.webm
-INFO:     127.0.0.1:45252 - "POST /api/transcribe HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45252 - "GET /api/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47210 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47220 - "GET /api/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47220 - "GET /api/sessions HTTP/1.1" 200 OK
+INFO:__main__:Transcribing audio file: recording.webm (24173 bytes)
+INFO:httpx:HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-tiny/revision/main "HTTP/1.1 200 OK"
+INFO:faster_whisper:Processing audio with duration 00:38.774
+INFO:faster_whisper:Detected language 'en' with probability 0.32
+INFO:__main__:Transcription successful: 7 characters
+INFO:     127.0.0.1:55824 - "POST /api/transcribe HTTP/1.1" 200 OK
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [667865]
+INFO:     Finished server process [26522]

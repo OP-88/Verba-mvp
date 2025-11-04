@@ -9,6 +9,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showSourceDialog, setShowSourceDialog] = useState(false)
   const [audioDevices, setAudioDevices] = useState([])
+  const [selectedSource, setSelectedSource] = useState(null) // Track selected device
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
 
@@ -91,8 +92,10 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
     }
   }
 
-  const handleDeviceSelect = async (deviceId) => {
+  const handleDeviceSelect = async (deviceId, sourceName) => {
     setShowSourceDialog(false)
+    setSelectedSource(sourceName)
+    console.log('Selected audio source:', sourceName, 'Device ID:', deviceId)
     await startRecording(deviceId)
   }
 
@@ -179,7 +182,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                     {/* System Audio Option */}
                     {systemAudioDevice && (
                       <button
-                        onClick={() => handleDeviceSelect(systemAudioDevice.deviceId)}
+                        onClick={() => handleDeviceSelect(systemAudioDevice.deviceId, 'System Audio')}
                         className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 border-2 border-purple-400/30 hover:border-purple-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
                       >
                         <div className="flex items-center justify-between">
@@ -199,7 +202,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                     
                     {/* Microphone Option */}
                     <button
-                      onClick={() => handleDeviceSelect(micDevice?.deviceId)}
+                      onClick={() => handleDeviceSelect(micDevice?.deviceId, 'Microphone')}
                       className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-green-500/20 to-teal-500/20 hover:from-green-500/30 hover:to-teal-500/30 border-2 border-green-400/30 hover:border-green-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
                     >
                       <div className="flex items-center justify-between">
@@ -291,9 +294,19 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
 
           {/* Status Messages */}
           {isRecording && (
-            <div className="flex items-center space-x-3 text-red-400 bg-red-500/20 px-6 py-3 rounded-full border border-red-500/30 animate-pulse">
-              <div className="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-              <span className="font-semibold text-lg">Recording in progress...</span>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-3 text-red-400 bg-red-500/20 px-6 py-3 rounded-full border border-red-500/30 animate-pulse">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                <span className="font-semibold text-lg">Recording in progress...</span>
+              </div>
+              {selectedSource && (
+                <div className="flex items-center justify-center space-x-2 text-sm">
+                  <span className="text-gray-400">Using:</span>
+                  <span className={`font-bold ${selectedSource === 'System Audio' ? 'text-purple-400' : 'text-green-400'}`}>
+                    {selectedSource === 'System Audio' ? '🔊' : '🎤'} {selectedSource}
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
