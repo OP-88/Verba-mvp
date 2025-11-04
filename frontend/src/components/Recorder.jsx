@@ -7,47 +7,98 @@ import { transcribeAudio } from '../api'
 function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [showSourceDialog, setShowSourceDialog] = useState(false)
+  const [audioDevices, setAudioDevices] = useState([])
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
 
-  const startRecording = async () => {
+  const startRecording = async (deviceId = null) => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const mediaRecorder = new MediaRecorder(stream)
+      // Build constraints - use exact only for non-default devices
+      let constraints
+      if (deviceId && deviceId !== 'default') {
+        constraints = { audio: { deviceId: { exact: deviceId } } }
+      } else {
+        constraints = { audio: true }
+      }
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      
+      // Use better options for MediaRecorder to ensure quality
+      let options = { mimeType: 'audio/webm' }
+      if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+        options.mimeType = 'audio/webm;codecs=opus'
+      }
+      
+      const mediaRecorder = new MediaRecorder(stream, options)
       mediaRecorderRef.current = mediaRecorder
       chunksRef.current = []
 
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
+          console.log('Audio chunk received:', event.data.size, 'bytes')
           chunksRef.current.push(event.data)
         }
       }
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' })
+        console.log('Recording stopped. Total chunks:', chunksRef.current.length)
+        const audioBlob = new Blob(chunksRef.current, { type: options.mimeType })
+        console.log('Final audio blob size:', audioBlob.size, 'bytes')
+        
+        if (audioBlob.size < 1000) {
+          onError('Recording too short. Please record for at least 2-3 seconds.', 'warning')
+          setIsRecording(false)
+          stream.getTracks().forEach(track => track.stop())
+          return
+        }
+        
         await handleTranscribe(audioBlob)
         
         // Stop all tracks
         stream.getTracks().forEach(track => track.stop())
       }
 
-      mediaRecorder.start()
+      // Start recording with timeslice to collect data in chunks every 100ms
+      mediaRecorder.start(100)
       setIsRecording(true)
+      console.log('Recording started with device:', deviceId || 'default')
     } catch (error) {
       console.error('Error starting recording:', error)
-      alert('Failed to access microphone. Please check permissions.')
+      onError('Failed to access microphone: ' + error.message)
     }
   }
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop()
-      setIsRecording(false)
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop())
     }
+  }
+
+  const loadAudioDevices = async () => {
+    try {
+      // Request permission first to get device labels
+      await navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => stream.getTracks().forEach(track => track.stop()))
+      
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      const audioInputs = devices.filter(device => device.kind === 'audioinput')
+      setAudioDevices(audioInputs)
+      setShowSourceDialog(true)
+    } catch (err) {
+      onError('Failed to load audio devices: ' + err.message)
+    }
+  }
+
+  const handleDeviceSelect = async (deviceId) => {
+    setShowSourceDialog(false)
+    await startRecording(deviceId)
   }
 
   const handleTranscribe = async (audioBlob) => {
     setIsProcessing(true)
+    setIsRecording(false) // Reset recording state immediately
     onTranscribing(true)
 
     try {
@@ -67,9 +118,120 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
   }
 
   return (
-    <div className="relative group">
-      {/* Glassmorphism Card */}
-      <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-8 transition-all duration-300 hover:bg-white/15">
+    <>
+      {/* Audio Source Selection Dialog */}
+      {showSourceDialog && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
+          <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-8 max-w-md w-full mx-4 animate-scale-in">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎙️ Select Audio Source</h3>
+            <div className="space-y-4">
+              {(() => {
+                console.log('Available audio devices:', audioDevices.map(d => ({ id: d.deviceId, label: d.label })))
+                
+                // Find the Verba system audio device
+                // It can be named differently depending on PulseAudio vs PipeWire:
+                // - "Monitor of Verba_Combined_Audio" (PulseAudio)
+                // - "verba_combined.monitor" (PipeWire)
+                const systemAudioDevice = audioDevices.find(d => {
+                  const label = d.label?.toLowerCase() || ''
+                  return (
+                    (label.includes('monitor') && label.includes('verba')) ||
+                    label.includes('verba_combined') ||
+                    (label.includes('combined') && label.includes('audio'))
+                  )
+                })
+                
+                console.log('System audio device found:', systemAudioDevice)
+                
+                // Find default microphone (exclude monitor devices)
+                const micDevice = audioDevices.find(d => {
+                  const label = d.label?.toLowerCase() || ''
+                  return d.deviceId === 'default' && !label.includes('monitor')
+                }) || audioDevices.find(d => {
+                  const label = d.label?.toLowerCase() || ''
+                  return !label.includes('monitor') && !label.includes('verba')
+                }) || audioDevices[0]
+                
+                // If no system audio device found, show all devices as fallback
+                if (!systemAudioDevice && audioDevices.length > 0) {
+                  return (
+                    <div className="space-y-3">
+                      <p className="text-yellow-300 text-sm mb-3">
+                        ℹ️ System audio not configured. Run: ./setup_system_audio.sh
+                      </p>
+                      {audioDevices.map((device, index) => (
+                        <button
+                          key={device.deviceId}
+                          onClick={() => handleDeviceSelect(device.deviceId)}
+                          className="w-full text-left px-4 py-3 rounded-lg bg-white/5 hover:bg-white/15 border border-white/20 transition-all"
+                        >
+                          <div className="text-white font-medium">
+                            {device.label || `Device ${index + 1}`}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )
+                }
+                
+                return (
+                  <>
+                    {/* System Audio Option */}
+                    {systemAudioDevice && (
+                      <button
+                        onClick={() => handleDeviceSelect(systemAudioDevice.deviceId)}
+                        className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 border-2 border-purple-400/30 hover:border-purple-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <div className="text-4xl">🔊</div>
+                            <div className="text-left">
+                              <div className="text-white font-bold text-xl">System Audio</div>
+                              <div className="text-purple-300 text-sm mt-1">Record what's playing on your computer</div>
+                            </div>
+                          </div>
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-3xl text-white">→</span>
+                          </div>
+                        </div>
+                      </button>
+                    )}
+                    
+                    {/* Microphone Option */}
+                    <button
+                      onClick={() => handleDeviceSelect(micDevice?.deviceId)}
+                      className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-green-500/20 to-teal-500/20 hover:from-green-500/30 hover:to-teal-500/30 border-2 border-green-400/30 hover:border-green-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-4xl">🎤</div>
+                          <div className="text-left">
+                            <div className="text-white font-bold text-xl">Microphone</div>
+                            <div className="text-green-300 text-sm mt-1">Record from your microphone</div>
+                          </div>
+                        </div>
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-3xl text-white">→</span>
+                        </div>
+                      </div>
+                    </button>
+                  </>
+                )
+              })()}
+            </div>
+            <button
+              onClick={() => setShowSourceDialog(false)}
+              className="mt-6 w-full px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 text-white transition-all duration-300 hover:scale-105 font-medium"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="relative group">
+        {/* Glassmorphism Card */}
+        <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-8 transition-all duration-300 hover:bg-white/15">
         <div className="flex flex-col items-center space-y-6">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white mb-3 tracking-wide">
@@ -90,7 +252,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
             )}
             
             <button
-              onClick={isRecording ? stopRecording : startRecording}
+              onClick={isRecording ? stopRecording : loadAudioDevices}
               disabled={isProcessing}
               className={`
                 relative w-40 h-40 rounded-full font-bold text-white text-xl
@@ -153,6 +315,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
