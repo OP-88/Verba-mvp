@@ -17,5 +17,10 @@ DATABASE_PATH = os.getenv("DATABASE_PATH", "verba_sessions.db")
 # Audio processing
 ENABLE_AUDIO_PREPROCESSING = os.getenv("ENABLE_AUDIO_PREPROCESSING", "true").lower() == "true"
 
-# CORS
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+# CORS - Allow localhost and local network access
+default_origins = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", default_origins).split(",")
+
+# For network access, we need to allow the local IP
+# This is dynamically set to allow any 192.168.x.x or 10.x.x.x network
+ALLOW_LOCAL_NETWORK = os.getenv("ALLOW_LOCAL_NETWORK", "true").lower() == "true"
