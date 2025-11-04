@@ -1,8 +1,50 @@
-# Verba - Public Beta v0.2.0
+# Verba - Offline AI Meeting Assistant
 
-**Verba** is an offline-first meeting assistant that records speech, transcribes it locally using AI, and produces clean, structured meeting notes—all without sending your data to the cloud.
+**100% offline, privacy-first meeting transcription powered by Whisper AI**
+
+**Verba** records speech, transcribes it locally using AI, and produces clean, structured meeting notes—all without sending your data to the cloud.
 
 > **Private. Offline-first. Built for classrooms, meetings, and lectures.**
+
+## 🚀 Quick Start
+
+### 1. Install Prerequisites
+
+**Fedora/RHEL:**
+```bash
+sudo dnf install python3.11 python3.11-devel nodejs ffmpeg-free ffmpeg-free-devel
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install python3.11 python3.11-dev python3.11-venv nodejs npm ffmpeg
+```
+
+### 2. Clone & Install
+
+```bash
+git clone https://github.com/OP-88/Verba-mvp.git
+cd Verba-mvp
+./install.sh
+```
+
+### 3. Run Verba
+
+```bash
+verba
+```
+
+Then open: **http://localhost:5173**
+
+### 4. Record & Transcribe
+
+1. Click **RECORD** → Select audio source (🔊 System Audio or 🎤 Microphone)
+2. Speak or play audio
+3. Click **STOP** → Wait for transcription
+4. Click **SUMMARIZE** → Get structured notes
+5. **Export** as Markdown
+
+**📚 Full docs:** [INSTALL.md](INSTALL.md) | [NETWORK_ACCESS.md](NETWORK_ACCESS.md) | [RELEASE_NOTES.md](RELEASE_NOTES.md)
 
 ---
 
