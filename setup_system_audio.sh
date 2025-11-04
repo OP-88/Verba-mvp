@@ -21,10 +21,21 @@ echo "🔧 Creating virtual audio sink..."
 SINK_NAME="verba_combined"
 pactl load-module module-null-sink sink_name=$SINK_NAME sink_properties=device.description="Verba_Combined_Audio" 2>/dev/null
 
-# Load loopback from default output to virtual sink (captures system audio)
-pactl load-module module-loopback source=@DEFAULT_SOURCE@ sink=$SINK_NAME 2>/dev/null
+# Get the default sink (system audio output) monitor source
+DEFAULT_SINK=$(pactl get-default-sink)
+SYSTEM_AUDIO_SOURCE="${DEFAULT_SINK}.monitor"
 
-# Load loopback from default mic to virtual sink (captures microphone)
+echo "   Default sink: $DEFAULT_SINK"
+echo "   System audio source: $SYSTEM_AUDIO_SOURCE"
+echo "   Microphone source: @DEFAULT_SOURCE@"
+echo ""
+
+# Load loopback from system audio output to virtual sink
+echo "   Loading system audio loopback..."
+pactl load-module module-loopback source=$SYSTEM_AUDIO_SOURCE sink=$SINK_NAME latency_msec=1 2>/dev/null
+
+# Load loopback from microphone to virtual sink
+echo "   Loading microphone loopback..."
 pactl load-module module-loopback source=@DEFAULT_SOURCE@ sink=$SINK_NAME latency_msec=1 2>/dev/null
 
 echo ""
