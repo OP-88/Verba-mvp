@@ -11,6 +11,20 @@ Verba is an offline-first meeting assistant that records speech, transcribes it 
 - Frontend: React 18 + Vite + TailwindCSS
 - Audio: MediaRecorder API (browser) + Pydub + ffmpeg
 
+## Quick Start
+
+**Easiest method - use the install script:**
+```bash
+./install.sh    # Installs to ~/.local/share/verba
+verba           # Launch application
+```
+
+**Manual start (for development):**
+```bash
+./start_verba.sh  # Starts both backend and frontend
+```
+Then open http://localhost:5173
+
 ## Development Commands
 
 ### Initial Setup
@@ -58,7 +72,15 @@ npm run build
 
 ### Testing
 
-No formal test framework is currently configured. Manual testing workflow:
+**Backend tests:**
+```bash
+cd backend
+source venv/bin/activate
+python test_comprehensive.py  # Full API integration tests
+python app_test.py           # Start backend in mock mode (no Whisper)
+```
+
+Manual testing workflow:
 1. Start both servers
 2. Open http://localhost:5173
 3. Test recording → transcription → summarization → export flow
@@ -148,6 +170,21 @@ Create `frontend/.env.local`:
 VITE_API_URL=http://localhost:8000
 ```
 
+### Deployment
+
+**Docker Compose:**
+```bash
+docker-compose up -d
+```
+Access at http://localhost:5173
+
+**Shell scripts:**
+```bash
+./start_verba.sh           # Start both servers locally
+./start_verba_network.sh   # Enable network access from other devices
+./stop_verba.sh            # Stop all Verba processes
+```
+
 ## Common Development Tasks
 
 ### Changing Whisper Model
@@ -165,6 +202,16 @@ First run downloads the model (~75MB for tiny, ~150MB for base).
 3. Add corresponding function in `frontend/src/api.js`
 4. Update components to use new API function
 
+### Testing Without Whisper
+
+For faster testing without waiting for AI model initialization:
+```bash
+cd backend
+source venv/bin/activate
+python app_test.py  # Uses mock transcriber
+```
+This returns mock transcripts for rapid API testing.
+
 ### Modifying Summarization Logic
 
 Edit `backend/summarizer.py`:
@@ -176,10 +223,11 @@ Current implementation is rule-based to maintain offline capability. For LLM-bas
 
 ### Database Schema Changes
 
-1. Modify `backend/models/__init__.py`
-2. Delete `backend/verba_sessions.db` (no migrations configured)
+No migration framework is configured. To modify schema:
+1. Edit `backend/models/__init__.py`
+2. Delete `backend/verba_sessions.db`
 3. Restart backend to recreate schema
-4. **Note:** This loses all existing sessions
+4. **Warning:** This deletes all existing sessions
 
 ### Adding New UI Components
 
@@ -215,10 +263,12 @@ Current implementation is rule-based to maintain offline capability. For LLM-bas
 
 ## System Requirements
 
+- **Python 3.11+**: For FastAPI + faster-whisper
+- **Node.js 18+**: For Vite + React
 - **ffmpeg**: Required for audio processing (Pydub dependency)
   ```bash
   # Fedora/RHEL
-  sudo dnf install ffmpeg
+  sudo dnf install ffmpeg-free ffmpeg-free-devel
   
   # Debian/Ubuntu
   sudo apt install ffmpeg
@@ -226,8 +276,6 @@ Current implementation is rule-based to maintain offline capability. For LLM-bas
   # macOS
   brew install ffmpeg
   ```
-- **Python 3.11+**: For FastAPI + faster-whisper
-- **Node.js 18+**: For Vite
 
 ## Troubleshooting
 
