@@ -30,7 +30,19 @@ No cloud. No tracking. No subscription.
 
 ## 🚀 Quick Start
 
-### One-Line Install (Linux)
+### 📥 Download & Run (Easiest)
+
+**Pick your platform:**
+
+| Platform | Download | Installation |
+|----------|----------|-------------|
+| 🐧 **Linux** | [verba-1.0.0-installer.sh](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/verba-1.0.0-installer.sh) | `bash verba-1.0.0-installer.sh` |
+| 🫵 **Windows** | [Setup Guide](INSTALL_WINDOWS.md) | See [INSTALL_WINDOWS.md](INSTALL_WINDOWS.md) |
+| 🍎 **macOS** | [Manual Install](INSTALL.md) | `brew install python@3.11 node ffmpeg` |
+
+**Linux users**: Just download and run the installer - it does everything!
+
+### Alternative: One-Line Install
 
 ```bash
 git clone https://github.com/OP-88/Verba-mvp.git && cd Verba-mvp && ./install.sh && verba
