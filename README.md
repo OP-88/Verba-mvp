@@ -30,41 +30,104 @@ No cloud. No tracking. No subscription.
 
 ## 🚀 Quick Start
 
-### 📥 Download & Install
+### 📦 Native Desktop Installers (Recommended)
 
-**Choose your platform:**
+**Download and double-click to install:**
 
-#### 🐧 Linux
+| Platform | Download | Size | Install |
+|----------|----------|------|------|
+| 🐧 **Fedora/RHEL** | [verba-1.0.0.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/verba-1.0.0-1.fc*.rpm) | ~50MB | `sudo dnf install verba-*.rpm` |
+| 🐧 **Debian/Ubuntu** | [verba-1.0.0.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/verba_1.0.0_amd64.deb) | ~50MB | `sudo dpkg -i verba-*.deb` |
+| 🪟 **Windows** | [Verba-Setup.exe](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-Setup-1.0.0.exe) | ~60MB | Double-click installer |
+| 🍎 **macOS** | [Verba-1.0.0.dmg](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0.dmg) | ~55MB | Drag to Applications |
+
+**After install:** Find "Verba" in your applications menu and click to launch!
+
+---
+
+### 🛠️ Quick Install (Manual)
+
+<details>
+<summary><b>🐧 Linux (Git)</b></summary>
+
 ```bash
-wget https://github.com/OP-88/Verba-mvp/archive/refs/heads/main.zip
-unzip main.zip && cd Verba-mvp-main
-./install.sh && verba
+git clone https://github.com/OP-88/Verba-mvp.git
+cd Verba-mvp
+./install.sh
+verba
 ```
+</details>
 
-#### 🪟 Windows  
-1. Download: [install-windows.ps1](https://raw.githubusercontent.com/OP-88/Verba-mvp/main/install-windows.ps1)
-2. Run in PowerShell:
+<details>
+<summary><b>🪟 Windows (PowerShell)</b></summary>
+
 ```powershell
+# Download and run installer script
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/OP-88/Verba-mvp/main/install-windows.ps1 -OutFile install-windows.ps1
 powershell -ExecutionPolicy Bypass -File install-windows.ps1
-powershell -File start-verba.ps1
 ```
+</details>
 
-#### 🍎 macOS
-```bash
-curl -L https://github.com/OP-88/Verba-mvp/archive/refs/heads/main.zip -o verba.zip
-unzip verba.zip && cd Verba-mvp-main
-./install-macos.sh && ./start_verba.sh
-```
-
-### 🚀 One-Line Install (Git)
+<details>
+<summary><b>🍎 macOS (Git)</b></summary>
 
 ```bash
-git clone https://github.com/OP-88/Verba-mvp.git && cd Verba-mvp && ./install.sh && verba
+git clone https://github.com/OP-88/Verba-mvp.git
+cd Verba-mvp
+./install-macos.sh
+./start_verba.sh
+```
+</details>
+
+**Then open:** **http://localhost:5173** 🎉
+
+---
+
+## 📥 Installation
+
+### Option 1: Native Package (Easiest)
+
+**Fedora/RHEL:**
+```bash
+# Download
+wget https://github.com/OP-88/Verba-mvp/releases/latest/download/verba-1.0.0-1.fc*.rpm
+
+# Install
+sudo dnf install ./verba-1.0.0-1.*.rpm
+
+# Run
+verba
 ```
 
-Then open: **http://localhost:5173** 🎉
+**Debian/Ubuntu:**
+```bash
+# Download
+wget https://github.com/OP-88/Verba-mvp/releases/latest/download/verba_1.0.0_amd64.deb
 
-### Prerequisites
+# Install
+sudo dpkg -i verba_1.0.0_amd64.deb
+sudo apt-get install -f  # Install dependencies
+
+# Run
+verba
+```
+
+**Windows:**
+1. Download [Verba-Setup-1.0.0.exe](https://github.com/OP-88/Verba-mvp/releases/latest)
+2. Double-click to install
+3. Find "Verba" in Start Menu
+
+**macOS:**
+1. Download [Verba-1.0.0.dmg](https://github.com/OP-88/Verba-mvp/releases/latest)
+2. Open DMG and drag Verba to Applications
+3. Run: `cd /Applications/Verba.app/Contents/Application && ./install-macos.sh`
+4. Launch from Applications
+
+### Option 2: Build Packages Yourself
+
+See [BUILD.md](BUILD.md) for instructions on building DEB, RPM, Windows EXE, or macOS DMG packages.
+
+### Prerequisites (for manual install)
 
 <details>
 <summary><b>Linux (Fedora/RHEL)</b></summary>
@@ -146,6 +209,7 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 ## 📚 Documentation
 
 - **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production readiness verification & test results
+- **[BUILD.md](BUILD.md)** - 📦 Build platform-specific packages (DEB, RPM, EXE, DMG)
 - **[INSTALL.md](INSTALL.md)** - Detailed installation guide
 - **[INSTALL_WINDOWS.md](INSTALL_WINDOWS.md)** - Windows-specific setup
 - **[NETWORK_ACCESS.md](NETWORK_ACCESS.md)** - Multi-device configuration
