@@ -124,9 +124,12 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
     <>
       {/* Audio Source Selection Dialog */}
       {showSourceDialog && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
-          <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-8 max-w-md w-full mx-4 animate-scale-in">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎙️ Select Audio Source</h3>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 animate-fade-in">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-purple-900/40 to-blue-900/40 rounded-3xl border-2 border-white/30 shadow-2xl p-10 max-w-lg w-full mx-4 animate-scale-in">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-2">🎹️ Choose Your Audio Source</h3>
+              <p className="text-gray-300 text-sm">Select where you want to record audio from</p>
+            </div>
             <div className="space-y-4">
               {(() => {
                 console.log('Available audio devices:', audioDevices.map(d => ({ id: d.deviceId, label: d.label })))
@@ -183,18 +186,16 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                     {systemAudioDevice && (
                       <button
                         onClick={() => handleDeviceSelect(systemAudioDevice.deviceId, 'System Audio')}
-                        className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 border-2 border-purple-400/30 hover:border-purple-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+                        className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-purple-600/30 to-blue-600/30 hover:from-purple-600/50 hover:to-blue-600/50 border-2 border-purple-400/40 hover:border-purple-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] group"
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="text-4xl">🔊</div>
-                            <div className="text-left">
-                              <div className="text-white font-bold text-xl">System Audio</div>
-                              <div className="text-purple-300 text-sm mt-1">Record what's playing on your computer</div>
-                            </div>
+                        <div className="flex items-center space-x-5">
+                          <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
+                          <div className="text-left flex-1">
+                            <div className="text-white font-bold text-2xl mb-1">Computer Audio</div>
+                            <div className="text-purple-200 text-base">Record videos, music, browser audio, or anything playing on your computer</div>
                           </div>
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-3xl text-white">→</span>
+                          <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                            <span className="text-4xl text-white">→</span>
                           </div>
                         </div>
                       </button>
@@ -203,18 +204,16 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                     {/* Microphone Option */}
                     <button
                       onClick={() => handleDeviceSelect(micDevice?.deviceId, 'Microphone')}
-                      className="w-full px-6 py-5 rounded-xl bg-gradient-to-br from-green-500/20 to-teal-500/20 hover:from-green-500/30 hover:to-teal-500/30 border-2 border-green-400/30 hover:border-green-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+                      className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-green-600/30 to-emerald-600/30 hover:from-green-600/50 hover:to-emerald-600/50 border-2 border-green-400/40 hover:border-green-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] group"
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="text-4xl">🎤</div>
-                          <div className="text-left">
-                            <div className="text-white font-bold text-xl">Microphone</div>
-                            <div className="text-green-300 text-sm mt-1">Record from your microphone</div>
-                          </div>
+                      <div className="flex items-center space-x-5">
+                        <div className="text-5xl group-hover:scale-110 transition-transform">🎤</div>
+                        <div className="text-left flex-1">
+                          <div className="text-white font-bold text-2xl mb-1">Microphone</div>
+                          <div className="text-green-200 text-base">Record your voice or sounds around you (meetings, lectures, conversations)</div>
                         </div>
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="text-3xl text-white">→</span>
+                        <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                          <span className="text-4xl text-white">→</span>
                         </div>
                       </div>
                     </button>
