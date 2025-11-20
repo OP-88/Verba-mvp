@@ -1,7 +1,17 @@
+use std::process::{Command, Child};
+use std::sync::Mutex;
+use tauri::Manager;
+
+struct BackendProcess(Mutex<Option<Child>>);
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
     .setup(|app| {
+      // Start Python backend
+      let backend_child = start_backend(app.path().app_data_dir().unwrap());
+      app.manage(BackendProcess(Mutex::new(Some(backend_child))));
+
       if cfg!(debug_assertions) {
         app.handle().plugin(
           tauri_plugin_log::Builder::default()
@@ -11,6 +21,44 @@ pub fn run() {
       }
       Ok(())
     })
+    .on_window_event(|event| {
+      if let tauri::WindowEvent::Destroyed = event.event() {
+        // Stop backend when window closes
+        if let Some(backend) = event.window().state::<BackendProcess>().0.lock().unwrap().as_mut() {
+          let _ = backend.kill();
+        }
+      }
+    })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
+}
+
+fn start_backend(app_dir: std::path::PathBuf) -> Child {
+  #[cfg(target_os = "windows")]
+  let python_cmd = "python";
+  
+  #[cfg(not(target_os = "windows"))]
+  let python_cmd = "python3";
+
+  // Find backend directory
+  let backend_dir = app_dir.join("backend");
+  let venv_python = if cfg!(target_os = "windows") {
+    backend_dir.join("venv").join("Scripts").join("python.exe")
+  } else {
+    backend_dir.join("venv").join("bin").join("python")
+  };
+
+  let python_exe = if venv_python.exists() {
+    venv_python.to_str().unwrap().to_string()
+  } else {
+    python_cmd.to_string()
+  };
+
+  let app_py = backend_dir.join("app.py");
+
+  Command::new(python_exe)
+    .arg(app_py)
+    .current_dir(backend_dir)
+    .spawn()
+    .expect("Failed to start backend server")
 }
