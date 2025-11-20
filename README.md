@@ -30,19 +30,33 @@ No cloud. No tracking. No subscription.
 
 ## 🚀 Quick Start
 
-### 📥 Download & Run (Easiest)
+### 📥 Download & Install
 
-**Pick your platform:**
+**Choose your platform:**
 
-| Platform | Download | Installation |
-|----------|----------|-------------|
-| 🐧 **Linux** | [verba-1.0.0-installer.sh](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/verba-1.0.0-installer.sh) | `bash verba-1.0.0-installer.sh` |
-| 🫵 **Windows** | [Setup Guide](INSTALL_WINDOWS.md) | See [INSTALL_WINDOWS.md](INSTALL_WINDOWS.md) |
-| 🍎 **macOS** | [Manual Install](INSTALL.md) | `brew install python@3.11 node ffmpeg` |
+#### 🐧 Linux
+```bash
+wget https://github.com/OP-88/Verba-mvp/archive/refs/heads/main.zip
+unzip main.zip && cd Verba-mvp-main
+./install.sh && verba
+```
 
-**Linux users**: Just download and run the installer - it does everything!
+#### 🪟 Windows  
+1. Download: [install-windows.ps1](https://raw.githubusercontent.com/OP-88/Verba-mvp/main/install-windows.ps1)
+2. Run in PowerShell:
+```powershell
+powershell -ExecutionPolicy Bypass -File install-windows.ps1
+powershell -File start-verba.ps1
+```
 
-### Alternative: One-Line Install
+#### 🍎 macOS
+```bash
+curl -L https://github.com/OP-88/Verba-mvp/archive/refs/heads/main.zip -o verba.zip
+unzip verba.zip && cd Verba-mvp-main
+./install-macos.sh && ./start_verba.sh
+```
+
+### 🚀 One-Line Install (Git)
 
 ```bash
 git clone https://github.com/OP-88/Verba-mvp.git && cd Verba-mvp && ./install.sh && verba
@@ -86,20 +100,6 @@ brew install python@3.11 node ffmpeg
 ```
 </details>
 
-## 📦 Installation
-
-### Method 1: Quick Install Script (Recommended)
-
-```bash
-git clone https://github.com/OP-88/Verba-mvp.git
-cd Verba-mvp
-./install.sh
-verba
-```
-
-### Method 2: Manual Installation
-
-See [INSTALL.md](INSTALL.md) for detailed manual setup instructions.
 
 ## 🎯 Usage
 
@@ -145,6 +145,7 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 
 ## 📚 Documentation
 
+- **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production readiness verification & test results
 - **[INSTALL.md](INSTALL.md)** - Detailed installation guide
 - **[INSTALL_WINDOWS.md](INSTALL_WINDOWS.md)** - Windows-specific setup
 - **[NETWORK_ACCESS.md](NETWORK_ACCESS.md)** - Multi-device configuration
