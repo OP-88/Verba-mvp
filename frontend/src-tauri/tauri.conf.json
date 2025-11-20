@@ -1,20 +1,20 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "verba-mvp-frontend",
-  "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "productName": "Verba",
+  "version": "1.0.0",
+  "identifier": "com.verba.app",
   "build": {
-    "frontendDist": "../build",
-    "devUrl": "http://localhost:3000",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
   "app": {
     "windows": [
       {
-        "title": "verba-mvp-frontend",
-        "width": 800,
-        "height": 600,
+        "title": "Verba - Offline AI Meeting Assistant",
+        "width": 1200,
+        "height": 800,
         "resizable": true,
         "fullscreen": false
       }
@@ -32,6 +32,16 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "shortDescription": "100% Private Offline AI Meeting Assistant",
+    "longDescription": "Record meetings, transcribe speech, and generate structured notes—all locally on your device. No cloud. No tracking. No subscription.",
+    "linux": {
+      "deb": {
+        "depends": ["ffmpeg"]
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    }
   }
 }
