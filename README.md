@@ -243,7 +243,7 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 ### Core Docs
 - **[STANDALONE.md](STANDALONE.md)** - 🖥️ **Build native desktop app (RECOMMENDED)**
 - **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production verification (100% test pass rate)
-- **[DOWNLOAD.md](DOWNLOAD.md)** - 📥 Quick download guide for users
+- **[READY_TO_RELEASE.md](READY_TO_RELEASE.md)** - 🚀 Release launch guide
 
 ### Installation & Build
 - **[BUILD_PLATFORMS.md](BUILD_PLATFORMS.md)** - 🔨 **Build for Windows, macOS, and Linux**
@@ -303,13 +303,70 @@ pkill -f "vite"
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+We welcome contributions! Whether you're fixing bugs, adding features, or improving documentation.
 
-See [docs/WARP.md](docs/WARP.md) for development setup.
+### 🐛 Found a Bug?
+
+**Please report it!** We want to make Verba better:
+
+1. **Check existing issues**: https://github.com/OP-88/Verba-mvp/issues
+2. **Create a new issue** with:
+   - Clear description of the bug
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Your system info (OS, version)
+   - Error messages or screenshots
+
+### 💡 Want to Contribute Code?
+
+1. **Fork the repository**: Click "Fork" at https://github.com/OP-88/Verba-mvp
+2. **Clone your fork**:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Verba-mvp.git
+   cd Verba-mvp
+   ```
+3. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Make your changes** and test thoroughly
+5. **Run tests**:
+   ```bash
+   ./test_full_system.sh
+   ```
+6. **Commit your changes**:
+   ```bash
+   git commit -m "Add your feature description"
+   ```
+7. **Push to your fork**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+8. **Submit a pull request** at https://github.com/OP-88/Verba-mvp/pulls
+
+### 📋 Contribution Guidelines
+
+- Write clear, descriptive commit messages
+- Add tests for new features
+- Update documentation as needed
+- Follow existing code style
+- Keep PRs focused on a single change
+- Be respectful and constructive
+
+### 🔧 Development Setup
+
+See [BUILD_PLATFORMS.md](BUILD_PLATFORMS.md) for building on your platform.  
+See [docs/WARP.md](docs/WARP.md) for detailed development environment setup.
+
+### 🌟 Ways to Contribute
+
+- 🐛 Report bugs
+- 💡 Suggest features
+- 📝 Improve documentation
+- 🧪 Write tests
+- 🎨 Improve UI/UX
+- 🌍 Add translations
+- 🔧 Fix issues
 
 ## 📄 License
 
