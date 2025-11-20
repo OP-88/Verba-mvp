@@ -158,24 +158,57 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                   return !label.includes('monitor') && !label.includes('verba')
                 }) || audioDevices[0]
                 
-                // If no system audio device found, show all devices as fallback
+                // If no system audio device found, show simple labeled options
                 if (!systemAudioDevice && audioDevices.length > 0) {
+                  // Categorize devices
+                  const monitorDevices = audioDevices.filter(d => {
+                    const label = d.label?.toLowerCase() || ''
+                    return label.includes('monitor') || label.includes('stereo mix')
+                  })
+                  const micDevices = audioDevices.filter(d => {
+                    const label = d.label?.toLowerCase() || ''
+                    return !label.includes('monitor') && !label.includes('stereo mix')
+                  })
+                  
                   return (
-                    <div className="space-y-3">
-                      <p className="text-yellow-300 text-sm mb-3">
-                        ℹ️ System audio not configured. Run: ./setup_system_audio.sh
+                    <div className="space-y-4">
+                      <p className="text-yellow-300 text-sm mb-3 text-center">
+                        ℹ️ System audio not configured. Run: <code className="bg-black/30 px-2 py-1 rounded">./setup_system_audio.sh</code>
                       </p>
-                      {audioDevices.map((device, index) => (
+                      
+                      {/* System Audio Option */}
+                      {monitorDevices.length > 0 && (
                         <button
-                          key={device.deviceId}
-                          onClick={() => handleDeviceSelect(device.deviceId)}
-                          className="w-full text-left px-4 py-3 rounded-lg bg-white/5 hover:bg-white/15 border border-white/20 transition-all"
+                          key={monitorDevices[0].deviceId}
+                          onClick={() => handleDeviceSelect(monitorDevices[0].deviceId, 'System Audio')}
+                          className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-purple-600/30 to-blue-600/30 hover:from-purple-600/50 hover:to-blue-600/50 border-2 border-purple-400/40 hover:border-purple-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] group"
                         >
-                          <div className="text-white font-medium">
-                            {device.label || `Device ${index + 1}`}
+                          <div className="flex items-center space-x-5">
+                            <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
+                            <div className="text-left flex-1">
+                              <div className="text-white font-bold text-2xl mb-1">Use System Audio</div>
+                              <div className="text-purple-200 text-sm">{monitorDevices[0].label}</div>
+                            </div>
                           </div>
                         </button>
-                      ))}
+                      )}
+                      
+                      {/* Microphone Option */}
+                      {micDevices.length > 0 && (
+                        <button
+                          key={micDevices[0].deviceId}
+                          onClick={() => handleDeviceSelect(micDevices[0].deviceId, 'Microphone')}
+                          className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-green-600/30 to-emerald-600/30 hover:from-green-600/50 hover:to-emerald-600/50 border-2 border-green-400/40 hover:border-green-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] group"
+                        >
+                          <div className="flex items-center space-x-5">
+                            <div className="text-5xl group-hover:scale-110 transition-transform">🎤</div>
+                            <div className="text-left flex-1">
+                              <div className="text-white font-bold text-2xl mb-1">Use Microphone</div>
+                              <div className="text-green-200 text-sm">{micDevices[0].label}</div>
+                            </div>
+                          </div>
+                        </button>
+                      )}
                     </div>
                   )
                 }
