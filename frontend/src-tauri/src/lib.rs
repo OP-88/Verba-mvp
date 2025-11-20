@@ -40,8 +40,19 @@ fn start_backend(app_dir: std::path::PathBuf) -> Child {
   #[cfg(not(target_os = "windows"))]
   let python_cmd = "python3";
 
-  // Find backend directory
-  let backend_dir = app_dir.join("backend");
+  // Find backend directory - handle both bundled paths
+  let mut backend_dir = app_dir.join("backend");
+  
+  // If backend not found, try the _up_/_up_/backend path (from resources bundling)
+  if !backend_dir.exists() {
+    backend_dir = app_dir.join("_up_").join("_up_").join("backend");
+  }
+  
+  // If still not found, try /usr/lib/Verba path (system install)
+  if !backend_dir.exists() {
+    backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
+  }
+  
   let venv_python = if cfg!(target_os = "windows") {
     backend_dir.join("venv").join("Scripts").join("python.exe")
   } else {
