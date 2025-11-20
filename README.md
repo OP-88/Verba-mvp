@@ -47,16 +47,28 @@ No cloud. No tracking. No subscription.
 
 **Download and install:**
 
-> 📦 **[Go to Releases Page](https://github.com/OP-88/Verba-mvp/releases/latest)** to download packages for your platform
+<div align="center">
 
-| Platform | Package Name | Size | Install |
-|----------|-------------|------|------|
-| 🐧 **Fedora/RHEL** | `Verba-1.0.0-1.x86_64.rpm` | ~168MB | `sudo dnf install Verba-*.rpm` |
-| 🐧 **Debian/Ubuntu** | `Verba_1.0.0_amd64.deb` | ~167MB | `sudo dpkg -i Verba_*.deb` |
-| 🪟 **Windows** | `Verba_1.0.0_x64-setup.msi` | ~170MB* | Double-click installer |
-| 🍎 **macOS** | `Verba_1.0.0_x64.dmg` | ~165MB* | Open DMG & drag to Apps |
+### 📥 Click to Download v1.0.0
+
+[![Download for Fedora/RHEL](https://img.shields.io/badge/Fedora%2FRHEL-Download%20RPM%20(168MB)-0B57D0?style=for-the-badge&logo=fedora&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba-1.0.0-1.x86_64.rpm)
+[![Download for Debian/Ubuntu](https://img.shields.io/badge/Debian%2FUbuntu-Download%20DEB%20(167MB)-D70A53?style=for-the-badge&logo=debian&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_amd64.deb)
+
+[![Download for Windows](https://img.shields.io/badge/Windows-Download%20MSI%20(170MB)-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_x64-setup.msi)
+[![Download for macOS](https://img.shields.io/badge/macOS-Download%20DMG%20(165MB)-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_x64.dmg)
 
 [![Build Status](https://github.com/OP-88/Verba-mvp/actions/workflows/release.yml/badge.svg)](https://github.com/OP-88/Verba-mvp/actions)
+
+**Or browse all releases:** [github.com/OP-88/Verba-mvp/releases](https://github.com/OP-88/Verba-mvp/releases)
+
+</div>
+
+| Platform | Install Command | Launch |
+|----------|----------------|--------|
+| 🐧 **Fedora/RHEL** | `sudo dnf install ./Verba-1.0.0-1.x86_64.rpm` | Find "Verba" in apps menu |
+| 🐧 **Debian/Ubuntu** | `sudo dpkg -i Verba_1.0.0_amd64.deb` | Find "Verba" in apps menu |
+| 🪟 **Windows** | Double-click the MSI installer | Find "Verba" in Start Menu |
+| 🍎 **macOS** | Open DMG & drag to Applications | Find "Verba" in Applications |
 
 **After install:** Find "Verba" in your applications menu → Click to launch → Native window opens instantly! 🎉
 
