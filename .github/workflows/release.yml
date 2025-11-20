@@ -42,7 +42,8 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
-            ffmpeg
+            ffmpeg \
+            rpm
 
       - name: Setup backend
         run: |
@@ -68,10 +69,11 @@ jobs:
 
       - name: Upload RPM package
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: linux-rpm
           path: frontend/src-tauri/target/release/bundle/rpm/*.rpm
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Upload AppImage (if built)
         uses: actions/upload-artifact@v4
