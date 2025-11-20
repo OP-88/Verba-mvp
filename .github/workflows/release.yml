@@ -43,8 +43,7 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             ffmpeg \
-            rpm \
-            rpm-build
+            rpm
 
       - name: Setup backend
         run: |
@@ -59,7 +58,7 @@ jobs:
         run: |
           cd frontend
           npm install
-          npm run tauri build
+          npm run tauri build -- --bundles deb,rpm || npm run tauri build -- --bundles deb
 
       - name: Upload DEB package
         uses: actions/upload-artifact@v4
