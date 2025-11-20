@@ -51,6 +51,8 @@ Verba comes in **two flavors**:
 
 **Download and double-click to install:**
 
+⚠️ **Dependencies auto-installed**: Python, Node.js, and ffmpeg are automatically installed by your package manager!
+
 | Platform | Download | Size | Install |
 |----------|----------|------|------|
 | 🐧 **Fedora/RHEL** | [verba-1.0.0.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/verba-1.0.0-1.fc*.rpm) | ~50MB | `sudo dnf install verba-*.rpm` |
@@ -96,7 +98,7 @@ cd Verba-mvp
 ```
 </details>
 
-**Then open:** **http://localhost:5173** 🎉
+**Browser opens automatically at http://localhost:5173** 🎉
 
 ---
 
@@ -184,7 +186,7 @@ brew install python@3.11 node ffmpeg
 ## 🎯 Usage
 
 1. **Start Verba**: Run `verba` or `./start_verba.sh`
-2. **Open Browser**: Navigate to http://localhost:5173
+2. **Browser Opens Automatically**: App opens at http://localhost:5173
 3. **Click RECORD**: Select audio source
    - 🔊 **System Audio** - Records computer audio (videos, music, etc.)
    - 🎤 **Microphone** - Records from microphone only
