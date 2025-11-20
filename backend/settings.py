@@ -7,7 +7,13 @@ import os
 ONLINE_FEATURES_ENABLED = os.getenv("ONLINE_FEATURES_ENABLED", "false").lower() == "true"
 
 # Model configuration
-WHISPER_MODEL_SIZE = os.getenv("WHISPER_MODEL_SIZE", "tiny")
+# Using 'base' model for better accuracy with accents and longer recordings
+# tiny = fast but less accurate (~1GB RAM)
+# base = balanced accuracy and speed (~2GB RAM) - RECOMMENDED
+# small = better accuracy (~3GB RAM)
+# medium = excellent accuracy (~5GB RAM)
+# large = best accuracy (~10GB RAM)
+WHISPER_MODEL_SIZE = os.getenv("WHISPER_MODEL_SIZE", "base")
 WHISPER_DEVICE = os.getenv("WHISPER_DEVICE", "cpu")
 WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8")
 

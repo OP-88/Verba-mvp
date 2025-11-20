@@ -22,7 +22,9 @@ import os
 import tempfile
 
 # Initialize model globally (loaded once)
-MODEL_SIZE = "tiny"
+# Import settings to use configured model size
+import settings
+MODEL_SIZE = settings.WHISPER_MODEL_SIZE
 MODEL = None
 
 
@@ -108,7 +110,35 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
         model = get_model()
         
         # Transcribe with faster-whisper
-        segments, info = model.transcribe(processed_path, beam_size=5)
+        # Enhanced settings for long recordings and better accent handling:
+        # - vad_filter: Remove silent parts for better performance on long recordings
+        # - vad_parameters: Tuned for speech detection
+        # - language: Auto-detect for multi-accent support
+        # - beam_size=5: Good balance between speed and accuracy
+        # - best_of=5: Generate 5 candidates and pick the best
+        # - temperature=0: Deterministic output (no randomness)
+        # - condition_on_previous_text: Use context from previous segments for better accuracy
+        segments, info = model.transcribe(
+            processed_path,
+            beam_size=5,
+            best_of=5,
+            temperature=0,
+            vad_filter=True,
+            vad_parameters=dict(
+                threshold=0.5,
+                min_speech_duration_ms=250,
+                max_speech_duration_s=float('inf'),  # Support very long recordings
+                min_silence_duration_ms=2000,
+                window_size_samples=1024,
+                speech_pad_ms=400
+            ),
+            condition_on_previous_text=True,
+            word_timestamps=False,
+            language=None  # Auto-detect language for multi-accent support
+        )
+        
+        print(f"Detected language: {info.language} (probability: {info.language_probability:.2f})")
+        print(f"Audio duration: {info.duration:.2f}s")
         
         # Combine all segments into a single transcript
         transcript_parts = []
@@ -117,6 +147,11 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
         
         transcript = " ".join(transcript_parts)
         
+        if not transcript or len(transcript.strip()) == 0:
+            print("Warning: Empty transcript generated")
+            return ""
+        
+        print(f"Transcription complete: {len(transcript)} characters")
         return transcript
     
     finally:

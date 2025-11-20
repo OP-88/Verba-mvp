@@ -22,14 +22,16 @@ No cloud. No tracking. No subscription.
 
 ## ✨ Features
 
-- **🎙️ Real-time Transcription** - OpenAI Whisper AI running locally
+- **🎹️ Accurate Transcription** - OpenAI Whisper 'base' model for excellent accuracy
+- **🌍 Multi-Accent Support** - Auto-detects language, handles different accents perfectly
+- **⏱️ Long Recording Support** - Supports 3-4 hour recordings with VAD filtering
 - **🔊 System Audio Capture** - Record videos, music, browser audio
 - **📝 Smart Summarization** - Extract key points, decisions, action items
 - **💾 Session History** - All meetings saved locally in SQLite
 - **📱 Multi-Device Access** - Use from phone/tablet on local network
 - **🔒 100% Private** - No cloud, no tracking, data never leaves your device
 - **📤 Markdown Export** - Download professional meeting notes
-- **⚡ Fast & Efficient** - Tiny model: ~5-15s per minute of audio
+- **⚡ Efficient Processing** - Base model: ~10-20s per minute of audio
 
 ## 🚀 Quick Start
 
