@@ -8,8 +8,11 @@ Record meetings, transcribe speech, and generate structured notes—all locally 
 No cloud. No tracking. No subscription.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/OP-88/Verba-mvp)](https://github.com/OP-88/Verba-mvp/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/OP-88/Verba-mvp/total)](https://github.com/OP-88/Verba-mvp/releases)
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Node](https://img.shields.io/badge/node-18+-green.svg)](https://nodejs.org/)
+[![Rust](https://img.shields.io/badge/rust-1.91+-orange.svg)](https://www.rust-lang.org/)
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Installation](#-installation) • [Documentation](#-documentation)
 
