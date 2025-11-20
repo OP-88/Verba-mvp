@@ -70,8 +70,7 @@ Runs in your web browser with separate backend process:
 - Works with Chrome, Firefox, Safari  
 - Requires manual start of backend + frontend
 
-<details>
-<summary><b>🐧 Linux (Git)</b></summary>
+**🐧 Linux (Git)**
 
 ```bash
 git clone https://github.com/OP-88/Verba-mvp.git
@@ -79,20 +78,16 @@ cd Verba-mvp
 ./install.sh
 verba
 ```
-</details>
 
-<details>
-<summary><b>🪟 Windows (PowerShell)</b></summary>
+**🪟 Windows (PowerShell)**
 
 ```powershell
 # Download and run installer script
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/OP-88/Verba-mvp/main/install-windows.ps1 -OutFile install-windows.ps1
 powershell -ExecutionPolicy Bypass -File install-windows.ps1
 ```
-</details>
 
-<details>
-<summary><b>🍎 macOS (Git)</b></summary>
+**🍎 macOS (Git)**
 
 ```bash
 git clone https://github.com/OP-88/Verba-mvp.git
