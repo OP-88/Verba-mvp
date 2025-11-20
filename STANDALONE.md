@@ -71,37 +71,65 @@ xcode-select --install
 
 ## Building the Standalone App
 
-### Option 1: Use the Build Script
+**⚠️ IMPORTANT:** Tauri requires building on the target platform. Cross-compilation is not recommended.
+
+- **Windows packages** must be built on Windows
+- **macOS packages** must be built on macOS  
+- **Linux packages** must be built on Linux
+
+### Linux Build
 
 ```bash
-cd /home/marc/projects/Verba-mvp
+cd /path/to/Verba-mvp
 ./build-tauri.sh
 ```
 
-### Option 2: Manual Build
-
+Or manually:
 ```bash
 cd frontend
 npm install
-npm run tauri:build
+npm run tauri build
+```
+
+### Windows Build
+
+```powershell
+cd C:\path\to\Verba-mvp
+cd frontend
+npm install
+npm run tauri build
+```
+
+### macOS Build
+
+```bash
+cd /path/to/Verba-mvp
+cd frontend
+npm install
+npm run tauri build
 ```
 
 ---
 
-## What Gets Built
+
+---
+
+## Build Output
+
+After building, packages are located in `frontend/src-tauri/target/release/bundle/`:
 
 ### Linux
-- **DEB Package**: `frontend/src-tauri/target/release/bundle/deb/verba_1.0.0_amd64.deb`
-- **RPM Package**: `frontend/src-tauri/target/release/bundle/rpm/verba-1.0.0-1.x86_64.rpm`
-- **AppImage**: `frontend/src-tauri/target/release/bundle/appimage/verba_1.0.0_amd64.AppImage`
+- **DEB Package**: `deb/Verba_1.0.0_amd64.deb` (~167MB)
+- **RPM Package**: `rpm/Verba-1.0.0-1.x86_64.rpm` (~168MB)
+- **AppImage**: `appimage/verba_1.0.0_amd64.AppImage` (if build succeeds)
 
 ### Windows
-- **MSI Installer**: `frontend/src-tauri/target/release/bundle/msi/Verba_1.0.0_x64.msi`
-- **EXE**: `frontend/src-tauri/target/release/verba.exe`
+- **MSI Installer**: `msi/Verba_1.0.0_x64-setup.msi` (~170MB estimated)
+- **Portable EXE**: `../verba.exe`
 
 ### macOS
-- **App Bundle**: `frontend/src-tauri/target/release/bundle/macos/Verba.app`
-- **DMG**: `frontend/src-tauri/target/release/bundle/dmg/Verba_1.0.0_x64.dmg`
+- **App Bundle**: `macos/Verba.app` (~165MB estimated)
+- **DMG Image**: `dmg/Verba_1.0.0_x64.dmg`
 
 ---
 
@@ -140,15 +168,25 @@ chmod +x verba_1.0.0_amd64.AppImage
 
 ### Windows
 
-1. Double-click `Verba_1.0.0_x64.msi`
-2. Follow installer
-3. Launch from Start Menu
+**MSI Installer (Recommended):**
+1. Download `Verba_1.0.0_x64-setup.msi`
+2. Double-click to install
+3. Launch "Verba" from Start Menu
+
+**Portable EXE:**
+- Download `verba.exe`
+- Double-click to run (no installation)
+- May require Windows Defender approval on first run
 
 ### macOS
 
-1. Open `Verba_1.0.0_x64.dmg`
-2. Drag to Applications
-3. Launch from Applications (no terminal needed!)
+**DMG Installer:**
+1. Download `Verba_1.0.0_x64.dmg`
+2. Open DMG file
+3. Drag `Verba.app` to Applications folder
+4. Launch from Applications
+
+**First Launch:** You may need to right-click → "Open" to bypass Gatekeeper (unsigned app).
 
 ---
 

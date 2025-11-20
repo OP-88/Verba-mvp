@@ -44,12 +44,14 @@ No cloud. No tracking. No subscription.
 
 | Platform | Download | Size | Install |
 |----------|----------|------|------|
-| 🐧 **Fedora/RHEL** | [Verba-1.0.0.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0-1.x86_64.rpm) | ~168MB | `sudo dnf install Verba-*.rpm` |
-| 🐧 **Debian/Ubuntu** | [Verba-1.0.0.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_amd64.deb) | ~167MB | `sudo dpkg -i Verba-*.deb` |
-| 🪟 **Windows** | [Verba-Setup.msi](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64-setup.msi) | ~170MB | Double-click installer |
-| 🍎 **macOS** | [Verba.app.tar.gz](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba.app.tar.gz) | ~165MB | Extract & drag to Applications |
+| 🐧 **Fedora/RHEL** | [Verba-1.0.0-1.x86_64.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0-1.x86_64.rpm) | 168MB | `sudo dnf install Verba-*.rpm` |
+| 🐧 **Debian/Ubuntu** | [Verba_1.0.0_amd64.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_amd64.deb) | 167MB | `sudo dpkg -i Verba_*.deb` |
+| 🪟 **Windows** | [Verba_1.0.0_x64-setup.msi](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64-setup.msi) | 170MB* | Double-click installer |
+| 🍎 **macOS** | [Verba_1.0.0_x64.dmg](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64.dmg) | 165MB* | Open DMG & drag to Apps |
 
 **After install:** Find "Verba" in your applications menu → Click to launch → Native window opens instantly! 🎉
+
+*\*Windows and macOS packages must be built on their respective platforms. Sizes are estimated.*
 
 ---
 
@@ -119,14 +121,20 @@ sudo dpkg -i Verba_1.0.0_amd64.deb
 ```
 
 **Windows:**
-1. Download and run the MSI installer
-2. Find "Verba" in Start Menu
-3. Native window opens - no browser needed!
+1. Download `Verba_1.0.0_x64-setup.msi`
+2. Double-click to install
+3. Launch "Verba" from Start Menu
+4. Native window opens - no browser needed!
+
+*Note: Windows package must be built on Windows. See [STANDALONE.md](STANDALONE.md) for build instructions.*
 
 **macOS:**
-1. Download and extract `Verba.app.tar.gz`
-2. Drag `Verba.app` to Applications folder
-3. Launch from Applications
+1. Download `Verba_1.0.0_x64.dmg`
+2. Open DMG and drag `Verba.app` to Applications
+3. Launch from Applications (may need to right-click → Open first time)
+4. Native window opens - no browser needed!
+
+*Note: macOS package must be built on macOS. See [STANDALONE.md](STANDALONE.md) for build instructions.*
 
 ### Option 2: Build Standalone App Yourself
 
@@ -235,7 +243,8 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 - **[DOWNLOAD.md](DOWNLOAD.md)** - 📥 Quick download guide for users
 
 ### Installation & Build
-- **[BUILD.md](BUILD.md)** - 📦 Build packages (DEB, RPM, EXE, DMG)
+- **[BUILD_PLATFORMS.md](BUILD_PLATFORMS.md)** - 🔨 **Build for Windows, macOS, and Linux**
+- **[BUILD.md](BUILD.md)** - 📦 Build browser-based packages (legacy)
 - **[INSTALL.md](INSTALL.md)** - Detailed installation guide
 - **[INSTALL_WINDOWS.md](INSTALL_WINDOWS.md)** - Windows-specific setup
 
