@@ -43,7 +43,8 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             ffmpeg \
-            rpm
+            rpm \
+            rpm-build
 
       - name: Setup backend
         run: |
