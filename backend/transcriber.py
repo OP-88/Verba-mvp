@@ -112,7 +112,6 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
         # Transcribe with faster-whisper
         # Enhanced settings for long recordings and better accent handling:
         # - vad_filter: Remove silent parts for better performance on long recordings
-        # - vad_parameters: Tuned for speech detection
         # - language: Auto-detect for multi-accent support
         # - beam_size=5: Good balance between speed and accuracy
         # - best_of=5: Generate 5 candidates and pick the best
@@ -124,14 +123,6 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
             best_of=5,
             temperature=0,
             vad_filter=True,
-            vad_parameters=dict(
-                threshold=0.5,
-                min_speech_duration_ms=250,
-                max_speech_duration_s=float('inf'),  # Support very long recordings
-                min_silence_duration_ms=2000,
-                window_size_samples=1024,
-                speech_pad_ms=400
-            ),
             condition_on_previous_text=True,
             word_timestamps=False,
             language=None  # Auto-detect language for multi-accent support
