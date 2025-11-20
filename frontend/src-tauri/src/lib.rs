@@ -21,10 +21,10 @@ pub fn run() {
       }
       Ok(())
     })
-    .on_window_event(|event| {
-      if let tauri::WindowEvent::Destroyed = event.event() {
+    .on_window_event(|_window, event| {
+      if let tauri::WindowEvent::Destroyed = event {
         // Stop backend when window closes
-        if let Some(backend) = event.window().state::<BackendProcess>().0.lock().unwrap().as_mut() {
+        if let Some(backend) = _window.state::<BackendProcess>().0.lock().unwrap().as_mut() {
           let _ = backend.kill();
         }
       }
