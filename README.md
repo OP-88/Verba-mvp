@@ -47,12 +47,16 @@ No cloud. No tracking. No subscription.
 
 **Download and install:**
 
-| Platform | Download | Size | Install |
-|----------|----------|------|------|
-| 🐧 **Fedora/RHEL** | [Verba-1.0.0-1.x86_64.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0-1.x86_64.rpm) | 168MB | `sudo dnf install Verba-*.rpm` |
-| 🐧 **Debian/Ubuntu** | [Verba_1.0.0_amd64.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_amd64.deb) | 167MB | `sudo dpkg -i Verba_*.deb` |
-| 🪟 **Windows** | [Verba_1.0.0_x64-setup.msi](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64-setup.msi) | 170MB* | Double-click installer |
-| 🍎 **macOS** | [Verba_1.0.0_x64.dmg](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64.dmg) | 165MB* | Open DMG & drag to Apps |
+> 📦 **[Go to Releases Page](https://github.com/OP-88/Verba-mvp/releases/latest)** to download packages for your platform
+
+| Platform | Package Name | Size | Install |
+|----------|-------------|------|------|
+| 🐧 **Fedora/RHEL** | `Verba-1.0.0-1.x86_64.rpm` | ~168MB | `sudo dnf install Verba-*.rpm` |
+| 🐧 **Debian/Ubuntu** | `Verba_1.0.0_amd64.deb` | ~167MB | `sudo dpkg -i Verba_*.deb` |
+| 🪟 **Windows** | `Verba_1.0.0_x64-setup.msi` | ~170MB* | Double-click installer |
+| 🍎 **macOS** | `Verba_1.0.0_x64.dmg` | ~165MB* | Open DMG & drag to Apps |
+
+[![Build Status](https://github.com/OP-88/Verba-mvp/actions/workflows/release.yml/badge.svg)](https://github.com/OP-88/Verba-mvp/actions)
 
 **After install:** Find "Verba" in your applications menu → Click to launch → Native window opens instantly! 🎉
 
