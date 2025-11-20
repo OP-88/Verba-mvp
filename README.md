@@ -51,7 +51,8 @@ No cloud. No tracking. No subscription.
 
 ### 📥 Click to Download v1.0.0
 
-[![Download for Linux](https://img.shields.io/badge/Linux-Download%20DEB%20(167MB)-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_amd64.deb)
+[![Download DEB](https://img.shields.io/badge/Debian%2FUbuntu-Download%20DEB%20(167MB)-D70A53?style=for-the-badge&logo=debian&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_amd64.deb)
+[![Download RPM](https://img.shields.io/badge/Fedora%2FRHEL-Download%20RPM%20(168MB)-0B57D0?style=for-the-badge&logo=fedora&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba-1.0.0-1.x86_64.rpm)
 
 [![Download for Windows](https://img.shields.io/badge/Windows-Download%20MSI%20(170MB)-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_x64-setup.msi)
 [![Download for macOS](https://img.shields.io/badge/macOS-Download%20DMG%20(165MB)-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/OP-88/Verba-mvp/releases/download/v1.0.0/Verba_1.0.0_x64.dmg)
@@ -64,11 +65,10 @@ No cloud. No tracking. No subscription.
 
 | Platform | Install Command | Launch |
 |----------|----------------|--------|
-| 🐧 **Linux** | `sudo dpkg -i Verba_1.0.0_amd64.deb` or `sudo apt install ./Verba_1.0.0_amd64.deb` | Find "Verba" in apps menu |
+| 🐧 **Debian/Ubuntu** | `sudo dpkg -i Verba_1.0.0_amd64.deb` or `sudo apt install ./Verba_1.0.0_amd64.deb` | Find "Verba" in apps menu |
+| 🐧 **Fedora/RHEL** | `sudo dnf install ./Verba-1.0.0-1.x86_64.rpm` | Find "Verba" in apps menu |
 | 🪟 **Windows** | Double-click the MSI installer | Find "Verba" in Start Menu |
 | 🍎 **macOS** | Open DMG & drag to Applications | Find "Verba" in Applications |
-
-> **Note for Fedora/RHEL users:** You can convert the DEB to RPM: `alien -r Verba_1.0.0_amd64.deb`
 
 **After install:** Find "Verba" in your applications menu → Click to launch → Native window opens instantly! 🎉
 
