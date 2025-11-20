@@ -1,23 +1,25 @@
-# Building Verba as a Standalone Desktop App
+# Verba Standalone Desktop App
 
-**No browser required!** Verba runs in its own native window with embedded browser engine.
+**✨ This is the RECOMMENDED way to run Verba!**
+
+No browser required! Verba runs in its own native window with embedded browser engine.
 
 ---
 
-## What's Different?
+## Why Standalone? 
 
-### Browser-Based Version (Current)
-- ❌ Requires Chrome/Firefox/Safari
-- ❌ Manual backend startup
-- ❌ Two separate processes
-- ✅ Easy to develop
-
-### Standalone App (New!)
+### Standalone App (RECOMMENDED)
 - ✅ **Own native window** - looks like a real desktop app
 - ✅ **Backend auto-starts** - just double-click to launch
 - ✅ **Single process** - close window = everything stops
 - ✅ **No browser dependency** - works on headless servers
 - ✅ **Professional appearance** - in app menus, taskbar, dock
+
+### Browser-Based Version (For Development)
+- ❌ Requires Chrome/Firefox/Safari
+- ❌ Manual backend startup
+- ❌ Two separate processes
+- ✅ Easy to develop and debug
 
 ---
 
@@ -105,7 +107,26 @@ npm run tauri:build
 
 ## Installing & Running
 
-### Linux (AppImage - Easiest!)
+### Quick Install (Recommended)
+
+**Download from releases:**
+- [Latest Release](https://github.com/OP-88/Verba-mvp/releases/latest)
+
+### Linux (DEB/RPM)
+
+```bash
+# Fedora/RHEL (Current build: 168MB)
+sudo dnf install ./Verba-1.0.0-1.x86_64.rpm
+verba  # Launch
+
+# Debian/Ubuntu (Current build: 167MB)
+sudo dpkg -i Verba_1.0.0_amd64.deb
+verba  # Launch
+```
+
+**After install:** Find "Verba" in your applications menu or run `verba` from terminal.
+
+### Linux (AppImage - If Available)
 
 ```bash
 # Make executable
@@ -115,20 +136,7 @@ chmod +x verba_1.0.0_amd64.AppImage
 ./verba_1.0.0_amd64.AppImage
 ```
 
-No installation needed! Just double-click.
-
-### Linux (DEB/RPM)
-
-```bash
-# Fedora/RHEL
-sudo dnf install ./verba-1.0.0-1.x86_64.rpm
-
-# Debian/Ubuntu
-sudo dpkg -i verba_1.0.0_amd64.deb
-
-# Run
-verba
-```
+*Note: AppImage build may fail due to upstream download issues. Use DEB/RPM instead.*
 
 ### Windows
 

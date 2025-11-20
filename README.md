@@ -30,41 +30,38 @@ No cloud. No tracking. No subscription.
 
 ## 🚀 Quick Start
 
-### 🎯 Choose Your Version
+### 📦 Standalone Desktop App (Recommended)
 
-Verba comes in **two flavors**:
+**True native application - no browser needed!**
 
-1. **🌐 Browser-Based** (Current) - Runs in your web browser
-   - Easy to develop and modify
-   - Works with Chrome, Firefox, Safari
-   - Requires browser to be open
+✨ **What you get:**
+- 🖥️ Native desktop window (not a browser tab)
+- ⚡ Backend auto-starts/stops with the app
+- 🔒 Works completely offline
+- 📱 Real application in your menu/taskbar
 
-2. **🖥️ Standalone Desktop App** (NEW!) - True native application
-   - No browser needed - has own window
-   - Backend auto-starts/stops
-   - Works on devices without browsers
-   - See [STANDALONE.md](STANDALONE.md) for details
-
----
-
-### 📦 Native Desktop Installers (Recommended)
-
-**Download and double-click to install:**
-
-⚠️ **Dependencies auto-installed**: Python, Node.js, and ffmpeg are automatically installed by your package manager!
+**Download and install:**
 
 | Platform | Download | Size | Install |
 |----------|----------|------|------|
-| 🐧 **Fedora/RHEL** | [verba-1.0.0.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/verba-1.0.0-1.fc*.rpm) | ~50MB | `sudo dnf install verba-*.rpm` |
-| 🐧 **Debian/Ubuntu** | [verba-1.0.0.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/verba_1.0.0_amd64.deb) | ~50MB | `sudo dpkg -i verba-*.deb` |
-| 🪟 **Windows** | [Verba-Setup.exe](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-Setup-1.0.0.exe) | ~60MB | Double-click installer |
-| 🍎 **macOS** | [Verba-1.0.0.dmg](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0.dmg) | ~55MB | Drag to Applications |
+| 🐧 **Fedora/RHEL** | [Verba-1.0.0.rpm](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba-1.0.0-1.x86_64.rpm) | ~168MB | `sudo dnf install Verba-*.rpm` |
+| 🐧 **Debian/Ubuntu** | [Verba-1.0.0.deb](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_amd64.deb) | ~167MB | `sudo dpkg -i Verba-*.deb` |
+| 🪟 **Windows** | [Verba-Setup.msi](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba_1.0.0_x64-setup.msi) | ~170MB | Double-click installer |
+| 🍎 **macOS** | [Verba.app.tar.gz](https://github.com/OP-88/Verba-mvp/releases/latest/download/Verba.app.tar.gz) | ~165MB | Extract & drag to Applications |
 
-**After install:** Find "Verba" in your applications menu and click to launch!
+**After install:** Find "Verba" in your applications menu → Click to launch → Native window opens instantly! 🎉
 
 ---
 
-### 🛠️ Quick Install (Manual)
+### 🌐 Alternative: Browser-Based Version
+
+<details>
+<summary><b>For developers or if you prefer browser interface</b></summary>
+
+Runs in your web browser with separate backend process:
+- Easy to develop and modify  
+- Works with Chrome, Firefox, Safari  
+- Requires manual start of backend + frontend
 
 <details>
 <summary><b>🐧 Linux (Git)</b></summary>
@@ -96,57 +93,52 @@ cd Verba-mvp
 ./install-macos.sh
 ./start_verba.sh
 ```
-</details>
 
-**Browser opens automatically at http://localhost:5173** 🎉
+**Browser opens automatically at http://localhost:5173**
+
+</details>
 
 ---
 
 ## 📥 Installation
 
-### Option 1: Native Package (Easiest)
+### Option 1: Standalone Desktop App (Recommended)
+
+See [Quick Start](#-quick-start) above for download links.
 
 **Fedora/RHEL:**
 ```bash
-# Download
-wget https://github.com/OP-88/Verba-mvp/releases/latest/download/verba-1.0.0-1.fc*.rpm
-
-# Install
-sudo dnf install ./verba-1.0.0-1.*.rpm
-
-# Run
-verba
+sudo dnf install ./Verba-1.0.0-1.x86_64.rpm
+# Launch from applications menu or run: verba
 ```
 
 **Debian/Ubuntu:**
 ```bash
-# Download
-wget https://github.com/OP-88/Verba-mvp/releases/latest/download/verba_1.0.0_amd64.deb
-
-# Install
-sudo dpkg -i verba_1.0.0_amd64.deb
-sudo apt-get install -f  # Install dependencies
-
-# Run
-verba
+sudo dpkg -i Verba_1.0.0_amd64.deb
+# Launch from applications menu or run: verba
 ```
 
 **Windows:**
-1. Download [Verba-Setup-1.0.0.exe](https://github.com/OP-88/Verba-mvp/releases/latest)
-2. Double-click to install
-3. Find "Verba" in Start Menu
+1. Download and run the MSI installer
+2. Find "Verba" in Start Menu
+3. Native window opens - no browser needed!
 
 **macOS:**
-1. Download [Verba-1.0.0.dmg](https://github.com/OP-88/Verba-mvp/releases/latest)
-2. Open DMG and drag Verba to Applications
-3. Run: `cd /Applications/Verba.app/Contents/Application && ./install-macos.sh`
-4. Launch from Applications
+1. Download and extract `Verba.app.tar.gz`
+2. Drag `Verba.app` to Applications folder
+3. Launch from Applications
 
-### Option 2: Build Packages Yourself
+### Option 2: Build Standalone App Yourself
 
-See [BUILD.md](BUILD.md) for instructions on building DEB, RPM, Windows EXE, or macOS DMG packages.
+See [STANDALONE.md](STANDALONE.md) for instructions on building the native desktop app with Tauri.
 
-### Prerequisites (for manual install)
+### Option 3: Browser-Based Version (Development)
+
+For developers who want to modify the code:
+
+See [BUILD.md](BUILD.md) for instructions on building browser-based packages (DEB, RPM, EXE, DMG).
+
+### Prerequisites (for manual development setup)
 
 <details>
 <summary><b>Linux (Fedora/RHEL)</b></summary>
@@ -185,8 +177,10 @@ brew install python@3.11 node ffmpeg
 
 ## 🎯 Usage
 
-1. **Start Verba**: Run `verba` or `./start_verba.sh`
-2. **Browser Opens Automatically**: App opens at http://localhost:5173
+### Standalone Desktop App
+
+1. **Launch Verba**: Find in applications menu or run `verba`
+2. **Native Window Opens**: App window opens instantly (no browser!)
 3. **Click RECORD**: Select audio source
    - 🔊 **System Audio** - Records computer audio (videos, music, etc.)
    - 🎤 **Microphone** - Records from microphone only
@@ -194,6 +188,13 @@ brew install python@3.11 node ffmpeg
 5. **Click STOP**: Wait for AI transcription
 6. **Click SUMMARIZE**: Get structured meeting notes
 7. **Export**: Download as Markdown
+8. **Close Window**: Backend automatically stops
+
+### Browser-Based Version
+
+1. **Start Verba**: Run `verba` or `./start_verba.sh`
+2. **Browser Opens Automatically**: App opens at http://localhost:5173
+3. Follow steps 3-7 above
 
 ### System Audio Recording (Linux)
 
@@ -222,15 +223,16 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 ## 📋 Tech Stack
 
 **Backend**: Python 3.11 • FastAPI • faster-whisper • SQLite  
-**Frontend**: React 18 • Vite • TailwindCSS  
-**AI**: OpenAI Whisper (tiny model, runs locally)
+**Frontend**: React 18 • Vite • TailwindCSS • Tauri (desktop app)  
+**AI**: OpenAI Whisper (tiny model, runs locally)  
+**Desktop**: Rust • Tauri • WebKit
 
 ## 📚 Documentation
 
 ### Core Docs
+- **[STANDALONE.md](STANDALONE.md)** - 🖥️ **Build native desktop app (RECOMMENDED)**
 - **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production verification (100% test pass rate)
 - **[DOWNLOAD.md](DOWNLOAD.md)** - 📥 Quick download guide for users
-- **[STANDALONE.md](STANDALONE.md)** - 🖥️ Build true desktop app (no browser needed!)
 
 ### Installation & Build
 - **[BUILD.md](BUILD.md)** - 📦 Build packages (DEB, RPM, EXE, DMG)
