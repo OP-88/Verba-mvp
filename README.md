@@ -30,6 +30,23 @@ No cloud. No tracking. No subscription.
 
 ## 🚀 Quick Start
 
+### 🎯 Choose Your Version
+
+Verba comes in **two flavors**:
+
+1. **🌐 Browser-Based** (Current) - Runs in your web browser
+   - Easy to develop and modify
+   - Works with Chrome, Firefox, Safari
+   - Requires browser to be open
+
+2. **🖥️ Standalone Desktop App** (NEW!) - True native application
+   - No browser needed - has own window
+   - Backend auto-starts/stops
+   - Works on devices without browsers
+   - See [STANDALONE.md](STANDALONE.md) for details
+
+---
+
 ### 📦 Native Desktop Installers (Recommended)
 
 **Download and double-click to install:**
@@ -208,15 +225,44 @@ See [NETWORK_ACCESS.md](NETWORK_ACCESS.md) for firewall configuration.
 
 ## 📚 Documentation
 
-- **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production readiness verification & test results
-- **[BUILD.md](BUILD.md)** - 📦 Build platform-specific packages (DEB, RPM, EXE, DMG)
+### Core Docs
+- **[PRODUCTION_READY.md](PRODUCTION_READY.md)** - ✅ Production verification (100% test pass rate)
+- **[DOWNLOAD.md](DOWNLOAD.md)** - 📥 Quick download guide for users
+- **[STANDALONE.md](STANDALONE.md)** - 🖥️ Build true desktop app (no browser needed!)
+
+### Installation & Build
+- **[BUILD.md](BUILD.md)** - 📦 Build packages (DEB, RPM, EXE, DMG)
 - **[INSTALL.md](INSTALL.md)** - Detailed installation guide
 - **[INSTALL_WINDOWS.md](INSTALL_WINDOWS.md)** - Windows-specific setup
+
+### Advanced
 - **[NETWORK_ACCESS.md](NETWORK_ACCESS.md)** - Multi-device configuration
 - **[RELEASE_NOTES.md](RELEASE_NOTES.md)** - Version history and changelog
-- **[docs/LECTURE_DEMO_GUIDE.md](docs/LECTURE_DEMO_GUIDE.md)** - Demo and presentation guide
+- **[docs/LECTURE_DEMO_GUIDE.md](docs/LECTURE_DEMO_GUIDE.md)** - Demo guide
 
-## 🛠️ Troubleshooting
+## 🧪 Testing
+
+### Run Comprehensive Tests
+
+```bash
+./test_full_system.sh
+```
+
+This runs **36 automated tests** covering:
+- ✅ Environment verification (Python, Node.js, ffmpeg)
+- ✅ Backend API endpoints
+- ✅ Database & storage with ISO 8601 timestamps
+- ✅ Transcription & summarization
+- ✅ Session management (CRUD operations)
+- ✅ Frontend availability
+- ✅ Dependencies verification
+- ✅ Performance benchmarks (6-7ms response times)
+
+**Current Status:** 100% pass rate (36/36 tests) ✅
+
+---
+
+## 🐛 Troubleshooting
 
 ### Transcription returns mock output
 Make sure `faster-whisper` is properly installed:
