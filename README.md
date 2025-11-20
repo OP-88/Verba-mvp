@@ -291,6 +291,24 @@ This runs **36 automated tests** covering:
 
 ---
 
+## ⚠️ Known Issues
+
+### Desktop App - Fedora/RHEL
+
+The desktop app packages are currently built on Ubuntu and may have Python library compatibility issues on Fedora/RHEL systems. If you encounter "Backend server is unavailable" errors:
+
+**Workaround:** Use the browser-based version instead:
+```bash
+git clone https://github.com/OP-88/Verba-mvp.git
+cd Verba-mvp
+./install.sh
+verba
+```
+
+**Status:** This will be fixed in v1.0.1 by using system Python instead of bundled dependencies.
+
+---
+
 ## 🐛 Troubleshooting
 
 ### Transcription returns mock output
