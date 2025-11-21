@@ -27,18 +27,20 @@ app = FastAPI(title="Verba API", version="0.2.0", description="Offline-first mee
 # CORS configuration for local network access
 if settings.ALLOW_LOCAL_NETWORK:
     # Allow all origins on local network for development
+    # Also allow tauri:// protocol for desktop app
     app.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=r"http://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+):\d+",
+        allow_origin_regex=r"(http|https|tauri)://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\\d+)?",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 else:
-    # Strict CORS for specific origins
+    # Strict CORS for specific origins (including Tauri desktop app)
+    allowed_origins = settings.ALLOWED_ORIGINS + ["tauri://localhost"]
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.ALLOWED_ORIGINS,
+        allow_origins=allowed_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

@@ -9,17 +9,28 @@ function Header() {
   const [backendDown, setBackendDown] = useState(false)
 
   useEffect(() => {
-    // Fetch status on mount
-    getStatus()
-      .then(data => {
-        setStatus(data)
-        setBackendDown(false)
-      })
-      .catch(err => {
-        // Fallback to offline mode if status fails
-        setStatus({ online_features_enabled: false, model: 'tiny', device: 'cpu' })
-        setBackendDown(true)
-      })
+    let attempts = 0
+    const maxAttempts = 20 // ~10s total with 500ms delay
+
+    const ping = () => {
+      attempts += 1
+      getStatus()
+        .then(data => {
+          setStatus(data)
+          setBackendDown(false)
+        })
+        .catch(() => {
+          // Don't show failure immediately; retry a few times in case backend is still starting
+          if (attempts < maxAttempts) {
+            setTimeout(ping, 500)
+          } else {
+            setStatus({ online_features_enabled: false, model: 'tiny', device: 'cpu' })
+            setBackendDown(true)
+          }
+        })
+    }
+
+    ping()
   }, [])
 
   const isOnline = status?.online_features_enabled
