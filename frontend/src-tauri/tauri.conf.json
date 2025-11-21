@@ -43,7 +43,10 @@
     "resources": ["../../backend"],
     "linux": {
       "deb": {
-        "depends": ["python3", "ffmpeg"]
+        "depends": ["python3", "python3-pip", "python3-venv", "ffmpeg"]
+      },
+      "rpm": {
+        "depends": ["python3", "python3-pip", "ffmpeg"]
       },
       "appimage": {
         "bundleMediaFramework": false
