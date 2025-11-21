@@ -57,9 +57,15 @@ fn start_backend(app_dir: std::path::PathBuf) -> Child {
   // Dependencies are installed via package manager (DEB/RPM dependencies)
   let app_py = backend_dir.join("app.py");
 
+  eprintln!("Starting backend from: {:?}", backend_dir);
+  eprintln!("Python command: {}", python_cmd);
+  eprintln!("App.py path: {:?}", app_py);
+
   Command::new(python_cmd)
-    .arg(app_py)
-    .current_dir(backend_dir)
+    .arg(&app_py)
+    .current_dir(&backend_dir)
+    .stdout(std::process::Stdio::inherit())
+    .stderr(std::process::Stdio::inherit())
     .spawn()
     .expect("Failed to start backend server")
 }
