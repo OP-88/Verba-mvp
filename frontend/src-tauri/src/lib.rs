@@ -12,6 +12,27 @@ pub fn run() {
       let backend_child = start_backend(app.path().app_data_dir().unwrap());
       app.manage(BackendProcess(Mutex::new(Some(backend_child))));
 
+      // Enable microphone permission for webkit on Linux
+      #[cfg(target_os = "linux")]
+      {
+        use tauri::Webview;
+        if let Some(window) = app.get_webview_window("main") {
+          window.with_webview(|webview| {
+            #[cfg(target_os = "linux")]
+            {
+              use webkit2gtk::WebViewExt;
+              let context = webview.context().unwrap();
+              let manager = context.website_data_manager().unwrap();
+              // Allow microphone access
+              webview.connect_permission_request(|_, request| {
+                request.allow();
+                true
+              });
+            }
+          }).ok();
+        }
+      }
+
       if cfg!(debug_assertions) {
         app.handle().plugin(
           tauri_plugin_log::Builder::default()
