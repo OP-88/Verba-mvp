@@ -55,12 +55,6 @@ pub fn run() {
 }
 
 fn start_backend(app_dir: std::path::PathBuf) -> Child {
-  #[cfg(target_os = "windows")]
-  let python_cmd = "python";
-  
-  #[cfg(not(target_os = "windows"))]
-  let python_cmd = "python3";
-
   // Find backend directory - handle both bundled paths
   let mut backend_dir = app_dir.join("backend");
   
@@ -69,20 +63,52 @@ fn start_backend(app_dir: std::path::PathBuf) -> Child {
     backend_dir = app_dir.join("_up_").join("_up_").join("backend");
   }
   
-  // If still not found, try /usr/lib/Verba path (system install)
+  // On Linux, try system install path if not found
+  #[cfg(target_os = "linux")]
   if !backend_dir.exists() {
     backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
   }
   
-  // Use system Python instead of bundled venv for cross-distro compatibility
-  // Dependencies are installed via package manager (DEB/RPM dependencies)
   let app_py = backend_dir.join("app.py");
 
   eprintln!("Starting backend from: {:?}", backend_dir);
-  eprintln!("Python command: {}", python_cmd);
   eprintln!("App.py path: {:?}", app_py);
 
-  Command::new(python_cmd)
+  // On Windows and macOS, use bundled venv
+  // On Linux, use system Python (installed via package manager)
+  #[cfg(target_os = "windows")]
+  let python_cmd = {
+    let venv_python = backend_dir.join("venv").join("Scripts").join("python.exe");
+    if venv_python.exists() {
+      eprintln!("Using bundled venv: {:?}", venv_python);
+      venv_python.to_str().unwrap().to_string()
+    } else {
+      eprintln!("WARNING: Bundled venv not found, trying system Python");
+      "python".to_string()
+    }
+  };
+
+  #[cfg(target_os = "macos")]
+  let python_cmd = {
+    let venv_python = backend_dir.join("venv").join("bin").join("python3");
+    if venv_python.exists() {
+      eprintln!("Using bundled venv: {:?}", venv_python);
+      venv_python.to_str().unwrap().to_string()
+    } else {
+      eprintln!("WARNING: Bundled venv not found, trying system Python");
+      "python3".to_string()
+    }
+  };
+
+  #[cfg(target_os = "linux")]
+  let python_cmd = {
+    eprintln!("Using system Python on Linux");
+    "python3".to_string()
+  };
+
+  eprintln!("Python command: {}", python_cmd);
+
+  Command::new(&python_cmd)
     .arg(&app_py)
     .current_dir(&backend_dir)
     .stdout(std::process::Stdio::inherit())
