@@ -53,21 +53,11 @@ fn start_backend(app_dir: std::path::PathBuf) -> Child {
     backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
   }
   
-  let venv_python = if cfg!(target_os = "windows") {
-    backend_dir.join("venv").join("Scripts").join("python.exe")
-  } else {
-    backend_dir.join("venv").join("bin").join("python")
-  };
-
-  let python_exe = if venv_python.exists() {
-    venv_python.to_str().unwrap().to_string()
-  } else {
-    python_cmd.to_string()
-  };
-
+  // Use system Python instead of bundled venv for cross-distro compatibility
+  // Dependencies are installed via package manager (DEB/RPM dependencies)
   let app_py = backend_dir.join("app.py");
 
-  Command::new(python_exe)
+  Command::new(python_cmd)
     .arg(app_py)
     .current_dir(backend_dir)
     .spawn()
