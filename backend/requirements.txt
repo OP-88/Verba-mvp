@@ -6,3 +6,4 @@ sqlalchemy==2.0.36
 pydub==0.25.1
 av==13.1.0
 requests==2.32.5
+audioop-lts; python_version >= "3.13"

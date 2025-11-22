@@ -9,8 +9,10 @@ pub fn run() {
   tauri::Builder::default()
     .setup(|app| {
       // Start Python backend
-      let backend_child = start_backend(app.path().app_data_dir().unwrap());
-      app.manage(BackendProcess(Mutex::new(Some(backend_child))));
+      // Use resource_dir() for correct path resolution in production
+      let resource_path = app.path().resource_dir().unwrap_or_else(|_| app.path().app_data_dir().unwrap());
+      let backend_child = start_backend(resource_path);
+      app.manage(BackendProcess(Mutex::new(backend_child)));
 
       // Configure webkit to allow microphone access on Linux
       #[cfg(target_os = "linux")]
@@ -54,19 +56,32 @@ pub fn run() {
     .expect("error while running tauri application");
 }
 
-fn start_backend(app_dir: std::path::PathBuf) -> Child {
-  // Find backend directory - handle both bundled paths
+fn start_backend(app_dir: std::path::PathBuf) -> Option<Child> {
+  // Find backend directory using resource_dir logic
+  // On macOS/Linux, resources are inside the bundle
+  // On Windows, they are in the installation directory
   let mut backend_dir = app_dir.join("backend");
   
-  // If backend not found, try the _up_/_up_/backend path (from resources bundling)
+  // Try to find the backend in the resource directory if available
+  // This is the correct way to find bundled resources in Tauri v2
   if !backend_dir.exists() {
-    backend_dir = app_dir.join("_up_").join("_up_").join("backend");
+      // In development, it might be relative to the crate
+      if let Ok(cwd) = std::env::current_dir() {
+          let dev_path = cwd.join("../../backend");
+          if dev_path.exists() {
+              backend_dir = dev_path;
+          }
+      }
   }
-  
+
   // On Linux, try system install path if not found
   #[cfg(target_os = "linux")]
   if !backend_dir.exists() {
-    backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
+    backend_dir = std::path::PathBuf::from("/usr/lib/Verba/backend");
+    // Fallback for development/testing
+    if !backend_dir.exists() {
+       backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
+    }
   }
   
   let app_py = backend_dir.join("app.py");
@@ -108,11 +123,16 @@ fn start_backend(app_dir: std::path::PathBuf) -> Child {
 
   eprintln!("Python command: {}", python_cmd);
 
-  Command::new(&python_cmd)
+  match Command::new(&python_cmd)
     .arg(&app_py)
     .current_dir(&backend_dir)
     .stdout(std::process::Stdio::inherit())
     .stderr(std::process::Stdio::inherit())
-    .spawn()
-    .expect("Failed to start backend server")
+    .spawn() {
+      Ok(child) => Some(child),
+      Err(e) => {
+        eprintln!("CRITICAL ERROR: Failed to start backend server: {}", e);
+        None
+      }
+    }
 }
