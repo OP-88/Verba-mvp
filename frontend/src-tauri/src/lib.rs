@@ -6,17 +6,7 @@ struct BackendProcess(Mutex<Option<Child>>);
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-  let mut builder = tauri::Builder::default();
-
-  if cfg!(debug_assertions) {
-    builder = builder.plugin(
-      tauri_plugin_log::Builder::default()
-        .level(log::LevelFilter::Info)
-        .build(),
-    );
-  }
-
-  builder
+  tauri::Builder::default()
     .setup(|app| {
       // Start Python backend
       // Use resource_dir() for correct path resolution in production
