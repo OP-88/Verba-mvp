@@ -132,12 +132,7 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
             </div>
             <div className="space-y-4">
               {(() => {
-                console.log('Available audio devices:', audioDevices.map(d => ({ id: d.deviceId, label: d.label })))
-                
                 // Find the Verba system audio device
-                // It can be named differently depending on PulseAudio vs PipeWire:
-                // - "Monitor of Verba_Combined_Audio" (PulseAudio)
-                // - "verba_combined.monitor" (PipeWire)
                 const systemAudioDevice = audioDevices.find(d => {
                   const label = d.label?.toLowerCase() || ''
                   return (
@@ -147,7 +142,14 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                   )
                 })
                 
-                console.log('System audio device found:', systemAudioDevice)
+                // Find any monitor device as fallback
+                const monitorDevices = audioDevices.filter(d => {
+                    const label = d.label?.toLowerCase() || ''
+                    return label.includes('monitor') || label.includes('stereo mix')
+                })
+
+                // Determine which device to use for System Audio
+                const systemDeviceToUse = systemAudioDevice || monitorDevices[0]
                 
                 // Find default microphone (exclude monitor devices)
                 const micDevice = audioDevices.find(d => {
@@ -158,81 +160,44 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                   return !label.includes('monitor') && !label.includes('verba')
                 }) || audioDevices[0]
                 
-                // If no system audio device found, show simple labeled options
-                if (!systemAudioDevice && audioDevices.length > 0) {
-                  // Categorize devices
-                  const monitorDevices = audioDevices.filter(d => {
-                    const label = d.label?.toLowerCase() || ''
-                    return label.includes('monitor') || label.includes('stereo mix')
-                  })
-                  const micDevices = audioDevices.filter(d => {
-                    const label = d.label?.toLowerCase() || ''
-                    return !label.includes('monitor') && !label.includes('stereo mix')
-                  })
-                  
-                  return (
-                    <div className="space-y-4">
+                const handleSystemAudioClick = () => {
+                    if (systemDeviceToUse) {
+                        handleDeviceSelect(systemDeviceToUse.deviceId, 'System Audio')
+                    } else {
+                        // If no device found, try default but warn
+                        // Or just show the setup instruction
+                        onError('System audio device not found. Please run ./setup_system_audio.sh', 'warning')
+                        // We can still try to record from default if they really want, or just stop here.
+                        // Let's try to record from default as a fallback if they insist? 
+                        // No, better to guide them to setup.
+                    }
+                }
+
+                return (
+                  <div className="space-y-4">
+                    {!systemDeviceToUse && (
                       <p className="text-yellow-300 text-sm mb-3 text-center">
                         ℹ️ System audio not configured. Run: <code className="bg-black/30 px-2 py-1 rounded">./setup_system_audio.sh</code>
                       </p>
-                      
-                      {/* System Audio Option */}
-                      {monitorDevices.length > 0 && (
-                        <button
-                          key={monitorDevices[0].deviceId}
-                          onClick={() => handleDeviceSelect(monitorDevices[0].deviceId, 'System Audio')}
-                          className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-purple-600/30 to-blue-600/30 hover:from-purple-600/50 hover:to-blue-600/50 border-2 border-purple-400/40 hover:border-purple-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] group"
-                        >
-                          <div className="flex items-center space-x-5">
-                            <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
-                            <div className="text-left flex-1">
-                              <div className="text-white font-bold text-2xl mb-1">Use System Audio</div>
-                              <div className="text-purple-200 text-sm">{monitorDevices[0].label}</div>
-                            </div>
-                          </div>
-                        </button>
-                      )}
-                      
-                      {/* Microphone Option */}
-                      {micDevices.length > 0 && (
-                        <button
-                          key={micDevices[0].deviceId}
-                          onClick={() => handleDeviceSelect(micDevices[0].deviceId, 'Microphone')}
-                          className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-green-600/30 to-emerald-600/30 hover:from-green-600/50 hover:to-emerald-600/50 border-2 border-green-400/40 hover:border-green-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] group"
-                        >
-                          <div className="flex items-center space-x-5">
-                            <div className="text-5xl group-hover:scale-110 transition-transform">🎤</div>
-                            <div className="text-left flex-1">
-                              <div className="text-white font-bold text-2xl mb-1">Use Microphone</div>
-                              <div className="text-green-200 text-sm">{micDevices[0].label}</div>
-                            </div>
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  )
-                }
-                
-                return (
-                  <>
-                    {/* System Audio Option */}
-                    {systemAudioDevice && (
-                      <button
-                        onClick={() => handleDeviceSelect(systemAudioDevice.deviceId, 'System Audio')}
-                        className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-purple-600/30 to-blue-600/30 hover:from-purple-600/50 hover:to-blue-600/50 border-2 border-purple-400/40 hover:border-purple-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] group"
-                      >
-                        <div className="flex items-center space-x-5">
-                          <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
-                          <div className="text-left flex-1">
-                            <div className="text-white font-bold text-2xl mb-1">Computer Audio</div>
-                            <div className="text-purple-200 text-base">Record videos, music, browser audio, or anything playing on your computer</div>
-                          </div>
-                          <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
-                            <span className="text-4xl text-white">→</span>
-                          </div>
-                        </div>
-                      </button>
                     )}
+                    
+                    {/* System Audio Option - ALWAYS VISIBLE */}
+                    <button
+                      onClick={handleSystemAudioClick}
+                      className="w-full px-7 py-6 rounded-2xl bg-gradient-to-br from-purple-600/30 to-blue-600/30 hover:from-purple-600/50 hover:to-blue-600/50 border-2 border-purple-400/40 hover:border-purple-300/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] group"
+                    >
+                      <div className="flex items-center space-x-5">
+                        <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
+                        <div className="text-left flex-1">
+                          <div className="text-white font-bold text-2xl mb-1">Computer Audio</div>
+                          <div className="text-purple-200 text-base">Record videos, music, browser audio, or anything playing on your computer</div>
+                          {systemDeviceToUse && <div className="text-purple-300/60 text-xs mt-1">{systemDeviceToUse.label}</div>}
+                        </div>
+                        <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                          <span className="text-4xl text-white">→</span>
+                        </div>
+                      </div>
+                    </button>
                     
                     {/* Microphone Option */}
                     <button
@@ -244,13 +209,14 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                         <div className="text-left flex-1">
                           <div className="text-white font-bold text-2xl mb-1">Microphone</div>
                           <div className="text-green-200 text-base">Record your voice or sounds around you (meetings, lectures, conversations)</div>
+                          {micDevice && <div className="text-green-300/60 text-xs mt-1">{micDevice.label}</div>}
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
                           <span className="text-4xl text-white">→</span>
                         </div>
                       </div>
                     </button>
-                  </>
+                  </div>
                 )
               })()}
             </div>
