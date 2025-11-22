@@ -18,6 +18,12 @@ pub fn run() {
       let backend_child = start_backend(resource_path);
       app.manage(BackendProcess(Mutex::new(backend_child)));
 
+      // Automatically setup system audio on Linux
+      #[cfg(target_os = "linux")]
+      {
+        setup_system_audio();
+      }
+
       // Configure webkit to allow microphone access on Linux
       #[cfg(target_os = "linux")]
       {
@@ -128,4 +134,65 @@ fn start_backend(app_dir: std::path::PathBuf) -> Option<Child> {
         None
       }
     }
+}
+
+#[cfg(target_os = "linux")]
+fn setup_system_audio() {
+  eprintln!("🎵 Setting up system audio...");
+  
+  // Check if PulseAudio sink already exists
+  let check = Command::new("pactl")
+    .args(&["list", "sinks", "short"])
+    .output();
+    
+  if let Ok(output) = check {
+    let output_str = String::from_utf8_lossy(&output.stdout);
+    if output_str.contains("Verba_Combined_Audio") {
+      eprintln!("✅ System audio already configured");
+      return;
+    }
+  }
+  
+  // Create virtual sink for combined audio
+  let _ = Command::new("pactl")
+    .args(&[
+      "load-module",
+      "module-null-sink",
+      "sink_name=Verba_Combined_Audio",
+      "sink_properties=device.description=Verba_Combined_Audio"
+    ])
+    .output();
+    
+  // Get default sink
+  let default_sink_output = Command::new("pactl")
+    .args(&["get-default-sink"])
+    .output();
+    
+  if let Ok(output) = default_sink_output {
+    let default_sink = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    
+    // Create loopback from system audio to combined sink
+    let _ = Command::new("pactl")
+      .args(&[
+        "load-module",
+        "module-loopback",
+        &format!("source={}.monitor", default_sink),
+        "sink=Verba_Combined_Audio",
+        "latency_msec=1"
+      ])
+      .output();
+      
+    // Create loopback from microphone to combined sink
+    let _ = Command::new("pactl")
+      .args(&[
+        "load-module",
+        "module-loopback",
+        "source=@DEFAULT_SOURCE@",
+        "sink=Verba_Combined_Audio",
+        "latency_msec=1"
+      ])
+      .output();
+      
+    eprintln!("✅ System audio configured successfully");
+  }
 }
