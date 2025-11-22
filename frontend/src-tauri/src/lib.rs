@@ -18,6 +18,27 @@ pub fn run() {
       let backend_child = start_backend(resource_path);
       app.manage(BackendProcess(Mutex::new(backend_child)));
 
+      // Configure webkit to allow microphone access on Linux
+      #[cfg(target_os = "linux")]
+      {
+        if let Some(window) = app.get_window("main") {
+          let _ = window.with_webview(move |webview| {
+            #[cfg(target_os = "linux")]
+            {
+              use webkit2gtk::WebViewExt;
+              use webkit2gtk::PermissionRequestExt;
+              unsafe {
+                let wv = &webview.inner().clone();
+                wv.connect_permission_request(move |_, request| {
+                  request.allow();
+                  true
+                });
+              }
+            }
+          });
+        }
+      }
+
       Ok(())
     })
     .on_window_event(|event| {
@@ -54,10 +75,6 @@ fn start_backend(app_dir: std::path::PathBuf) -> Option<Child> {
   #[cfg(target_os = "linux")]
   if !backend_dir.exists() {
     backend_dir = std::path::PathBuf::from("/usr/lib/Verba/backend");
-    // Fallback for development/testing
-    if !backend_dir.exists() {
-       backend_dir = std::path::PathBuf::from("/usr/lib/Verba/_up_/_up_/backend");
-    }
   }
   
   let app_py = backend_dir.join("app.py");
