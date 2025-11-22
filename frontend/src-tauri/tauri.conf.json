@@ -1,7 +1,10 @@
+```json
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Verba",
-  "version": "1.0.0",
+  "package": {
+    "productName": "Verba",
+    "version": "1.0.7"
+  },
   "identifier": "com.verba.app",
   "build": {
     "frontendDist": "../dist",
@@ -43,13 +46,24 @@
     "shortDescription": "100% Private Offline AI Meeting Assistant",
     "longDescription": "Record meetings, transcribe speech, and generate structured notes—all locally on your device. No cloud. No tracking. No subscription.",
     "externalBin": [],
-    "resources": ["../../backend"],
+    "resources": [
+      "../../backend"
+    ],
     "linux": {
       "deb": {
-        "depends": ["python3", "python3-pip", "python3-venv", "ffmpeg"]
+        "depends": [
+          "python3",
+          "python3-pip",
+          "python3-venv",
+          "ffmpeg"
+        ]
       },
       "rpm": {
-        "depends": ["python3", "python3-pip", "ffmpeg"]
+        "depends": [
+          "python3",
+          "python3-pip",
+          "ffmpeg"
+        ]
       },
       "appimage": {
         "bundleMediaFramework": false
@@ -57,7 +71,9 @@
     },
     "windows": {
       "wix": {
-        "language": ["en-US"]
+        "language": [
+          "en-US"
+        ]
       }
     },
     "macOS": {

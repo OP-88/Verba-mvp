@@ -189,9 +189,11 @@ function Recorder({ onTranscriptComplete, onTranscribing, onError }) {
                       <div className="flex items-center space-x-5">
                         <div className="text-5xl group-hover:scale-110 transition-transform">🔊</div>
                         <div className="text-left flex-1">
-                          <div className="text-white font-bold text-2xl mb-1">Computer Audio</div>
-                          <div className="text-purple-200 text-base">Record videos, music, browser audio, or anything playing on your computer</div>
-                          {systemDeviceToUse && <div className="text-purple-300/60 text-xs mt-1">{systemDeviceToUse.label}</div>}
+                          <div className="text-white font-bold text-2xl mb-1">System Audio</div>
+                          <div className="text-purple-200 text-base">Record videos, music, browser audio</div>
+                          <div className={`text-xs mt-1 ${systemDeviceToUse ? 'text-purple-300/60' : 'text-yellow-300/80'}`}>
+                            {systemDeviceToUse ? systemDeviceToUse.label : '⚠️ Not configured (Click to setup)'}
+                          </div>
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
                           <span className="text-4xl text-white">→</span>
