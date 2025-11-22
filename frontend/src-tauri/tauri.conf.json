@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "package": {
     "productName": "Verba",
-    "version": "1.0.7"
+    "version": "1.0.9"
   },
   "identifier": "com.verba.app",
   "build": {
