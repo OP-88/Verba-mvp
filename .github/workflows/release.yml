@@ -42,6 +42,8 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
+            libwebkit2gtk-4.0-dev \
+            libsoup2.4-dev \
             ffmpeg \
             rpm
 
