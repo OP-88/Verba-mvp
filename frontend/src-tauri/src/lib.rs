@@ -18,32 +18,12 @@ pub fn run() {
       let backend_child = start_backend(resource_path);
       app.manage(BackendProcess(Mutex::new(backend_child)));
 
-      // Configure webkit to allow microphone access on Linux
-      #[cfg(target_os = "linux")]
-      {
-        if let Some(window) = app.get_window("main") {
-          let _ = window.with_webview(move |webview| {
-            #[cfg(target_os = "linux")]
-            {
-              use webkit2gtk::WebViewExt;
-              use webkit2gtk::PermissionRequestExt;
-              unsafe {
-                let wv = &webview.inner().clone();
-                wv.connect_permission_request(move |_, request| {
-                  request.allow();
-                  true
-                });
-              }
-            }
-          });
-        }
-      }
       Ok(())
     })
-    .on_window_event(|_window, event| {
-      if let tauri::WindowEvent::Destroyed = event {
+    .on_window_event(|event| {
+      if let tauri::WindowEvent::CloseRequested { .. } = event.event() {
         // Stop backend when window closes
-        if let Some(backend) = _window.state::<BackendProcess>().0.lock().unwrap().as_mut() {
+        if let Some(backend) = event.window().state::<BackendProcess>().0.lock().unwrap().as_mut() {
           let _ = backend.kill();
         }
       }
