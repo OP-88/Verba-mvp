@@ -10,14 +10,18 @@ pub fn run() {
     .setup(|app| {
       // Start Python backend
       // Use resource_dir() for correct path resolution in production
-      let resource_path = app.path().resource_dir().unwrap_or_else(|_| app.path().app_data_dir().unwrap());
+      // Tauri v1: path_resolver() returns PathBuf directly (not Result) for resource_dir
+      let resource_path = app.path_resolver()
+          .resource_dir()
+          .unwrap_or_else(|| app.path_resolver().app_data_dir().unwrap());
+      
       let backend_child = start_backend(resource_path);
       app.manage(BackendProcess(Mutex::new(backend_child)));
 
       // Configure webkit to allow microphone access on Linux
       #[cfg(target_os = "linux")]
       {
-        if let Some(window) = app.get_webview_window("main") {
+        if let Some(window) = app.get_window("main") {
           let _ = window.with_webview(move |webview| {
             #[cfg(target_os = "linux")]
             {
