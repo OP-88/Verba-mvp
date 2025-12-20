@@ -111,27 +111,23 @@ def transcribe_audio(audio_path: str, preprocess: bool = True) -> str:
         model = get_model()
         print("Model loaded. Starting transcription...")
         
-        # Final tuned parameters - minimal VAD filtering, strong hallucination prevention:
-        # - vad_filter=True with threshold=0.1 (extremely low - preserves all speech)
-        # - no_speech_threshold=0.8 (high confidence required for silence)
-        # - compression_ratio_threshold=2.4 (detect repetitive hallucinations)
+        # Transcribe with faster-whisper
+        # Enhanced settings for long recordings and better accent handling:
+        # - vad_filter: Remove silent parts for better performance on long recordings
+        # - language: Auto-detect for multi-accent support
+        # - beam_size=5: Good balance between speed and accuracy
+        # - best_of=5: Generate 5 candidates and pick the best
+        # - temperature=0: Deterministic output (no randomness)
+        # - condition_on_previous_text: Use context from previous segments for better accuracy
         segments, info = model.transcribe(
             processed_path,
             beam_size=5,
+            best_of=5,
+            temperature=0,
             vad_filter=True,
-            vad_parameters=dict(
-                threshold=0.1,  # Extremely low - preserve all possible speech
-                min_speech_duration_ms=50,
-                max_speech_duration_s=float('inf'),  # No limit on speech duration
-                min_silence_duration_ms=3000  # 3 second pauses
-            ),
-            no_speech_threshold=0.8,  # High threshold - less likely to hallucinate
-            log_prob_threshold=-0.5,  # Filter low-confidence
-            compression_ratio_threshold=2.4,  # Detect repetitive text
-            condition_on_previous_text=False,  # Disable to reduce hallucination propagation
+            condition_on_previous_text=True,
             word_timestamps=False,
-            temperature=0.0,
-            language=None
+            language=None  # Auto-detect language for multi-accent support
         )
         
         print(f"Detected language: {info.language} (probability: {info.language_probability:.2f})")
